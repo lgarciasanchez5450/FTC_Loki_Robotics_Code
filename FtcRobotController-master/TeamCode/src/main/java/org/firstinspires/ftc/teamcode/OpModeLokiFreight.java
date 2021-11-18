@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+//If you are reading this leo is good at clash royale
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
