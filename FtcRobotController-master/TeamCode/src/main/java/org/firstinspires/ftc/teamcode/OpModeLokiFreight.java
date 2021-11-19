@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-//if you are reading this then you are a good person
+//John is a great redstone engineer
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
