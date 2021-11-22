@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-//John is a great redstone engineer
+//John & Leo are great redstone engineers
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -100,6 +100,8 @@ public class OpModeLokiFreight extends OpMode {
         //set up vars for other motors' power
         double duckp;
 
+        //Gamepad 1 Controls
+        //Robot Move Speed
         if (gamepad1.a) {
             SpeedFactor = 3;
         } else if (gamepad1.b) {
@@ -107,14 +109,26 @@ public class OpModeLokiFreight extends OpMode {
         } else if (gamepad1.x) {
             SpeedFactor = 1;
         }
-        if (gamepad1.dpad_up) {
+        //Duck Spinner
+        duckp = 0;
+        if (gamepad1.left_bumper) {
+            duckp += .3;
+        }
+        if (gamepad1.right_bumper) {
+            duckp -= .3;
+        }
+
+        //Gamepad 2 Controls
+        //Arm Raising and Lowering
+        if (gamepad2.dpad_up) {
             armP = .4;
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad2.dpad_down) {
             armP = -.4;
         }
-        if (gamepad1.dpad_left) {
+        //Claw Opening and Closing
+        if (gamepad2.dpad_left) {
             clawPos += .03;
-        } else if (gamepad1.dpad_right) {
+        } else if (gamepad2.dpad_right) {
             clawPos -=.03;
         }
         clawPos = Range.clip(clawPos,0,1);
@@ -160,15 +174,8 @@ public class OpModeLokiFreight extends OpMode {
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", lfp + lbp, rfp + rbp);
+        telemetry.update();
 
-        //for ducks
-        duckp = 0;
-        if (gamepad1.left_bumper) {
-            duckp += .3;
-        }
-        if (gamepad1.right_bumper) {
-            duckp -= .3;
-        }
 
         duckMotor.setPower(duckp);
         armMotor.setPower(armP);
