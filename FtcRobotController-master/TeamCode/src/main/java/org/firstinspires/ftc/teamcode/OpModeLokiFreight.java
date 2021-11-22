@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 //John & Leo are great redstone engineers
+//Andy is not a redstone engineer
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
