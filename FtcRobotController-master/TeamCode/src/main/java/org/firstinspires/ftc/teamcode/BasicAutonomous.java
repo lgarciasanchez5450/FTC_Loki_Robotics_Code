@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+//@Disabled
 @Autonomous(name="Basic Auto",group= "stuff")
 public class BasicAutonomous extends LinearOpMode {
 
@@ -23,7 +23,7 @@ public class BasicAutonomous extends LinearOpMode {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 0.6;
-    //static final double TURN_SPEED = 0.5;
+    static final double TURN_SPEED = 0.5;
 
     @Override
     public void runOpMode() {
@@ -76,8 +76,7 @@ public class BasicAutonomous extends LinearOpMode {
         waitForStart();
 
         encoderDrive(DRIVE_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
-
-
+        encoderTurn(TURN_SPEED,1,50);
 
 
     }
@@ -95,7 +94,7 @@ public class BasicAutonomous extends LinearOpMode {
         newlfTarget = lf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
         newrfTarget = rf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
         newlbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newrbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
 
         lf.setTargetPosition(newlfTarget);
         rf.setTargetPosition(newrfTarget);
@@ -130,5 +129,99 @@ public class BasicAutonomous extends LinearOpMode {
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
+    }
+    public void encoderTurn(double speed, double direction, double newTargetInches) {
+        //speed is the speed at which the robot moves
+        //direction clarifies whether it is moving forwards or backwards
+        //newTargetInches is how far to move
+        //This is all new and not tested yet
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * -direction);
+        lb.setPower(Math.abs(speed) * direction);
+        rb.setPower(Math.abs(speed) * -direction);
+
+        while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void encoderStrafe(double speed, double direction, double newTargetInches) {
+        //speed is the speed at which the robot moves
+        //direction clarifies whether it is moving forwards or backwards
+        //newTargetInches is how far to move
+        //This is all new and not tested yet
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * -direction);
+        lb.setPower(Math.abs(speed) * -direction);
+        rb.setPower(Math.abs(speed) * direction);
+
+        while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
