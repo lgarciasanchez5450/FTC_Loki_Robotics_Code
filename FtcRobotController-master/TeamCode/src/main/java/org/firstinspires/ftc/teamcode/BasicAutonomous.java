@@ -132,8 +132,7 @@ public class BasicAutonomous extends LinearOpMode {
     }
     public void encoderTurn(double speed, double angle, String angleType) {
         //speed is the speed at which the robot moves
-        //direction clarifies whether it is moving forwards or backwards
-        //newTargetInches is how far to move
+        //direction clarifies whether it is turning clockwise or counter-clockwise
         //This is all new and not tested yet
         final double PI = 3.1415926535
         if (angleType.equals("Radians")) {
@@ -151,10 +150,9 @@ public class BasicAutonomous extends LinearOpMode {
         int leftTarget;
         int rightTarget;
 
+        int ticks_to_pos =
 
-        newlfTarget = lf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newrfTarget = rf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newlbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        leftTarget = rb.getCurrentPosition() + (int)(angle * COUNTS_PER_INCH);
         newrbTarget = rb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
 
         lf.setTargetPosition(newlfTarget);
