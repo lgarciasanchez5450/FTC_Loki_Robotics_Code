@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+@Disabled
 @Autonomous(name="Red Warehouse Auto",group= "Red Side")
 public class RedWarehouseAuto extends LinearOpMode {
 
@@ -17,9 +18,9 @@ public class RedWarehouseAuto extends LinearOpMode {
     private DcMotor rb = null;
     private DcMotor duckMotor = null;
 
-    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
+    static final double DRIVE_GEAR_REDUCTION = 20;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 4;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 0.6;
