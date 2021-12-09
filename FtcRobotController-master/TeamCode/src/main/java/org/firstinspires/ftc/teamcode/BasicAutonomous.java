@@ -75,7 +75,12 @@ public class BasicAutonomous extends LinearOpMode {
         waitForStart();
 
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
-        encoderTurn(TURN_SPEED,1,20);
+        for (int i=0; i<10;i++) {
+            encoderTurn(TURN_SPEED,1,360);
+            sleep(200);
+        }
+
+
         //encoderStrafe(TURN_SPEED,1,20);
 
 
@@ -144,7 +149,7 @@ public class BasicAutonomous extends LinearOpMode {
         //newTargetInches is how far to move
         //This is all new and not tested yet
 
-        angle /= 360;
+        angle /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP THE FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         int newlfTarget;
         int newrfTarget;
         int newlbTarget;
