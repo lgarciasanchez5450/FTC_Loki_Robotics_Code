@@ -10,15 +10,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="Basic Auto",group= "stuff")
 public class BasicAutonomous extends LinearOpMode {
 
+    static  final double LF_MULTIPLIER = (523/556) * 1;
+    static final double RF_MULTIPLIER = (523/523) * 1;
+    static final double RB_MULTIPILER = (523/536) * (546/548);
+    static final double LB_MULTIPLIER = (523/540) * (546/555);
+
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
     private DcMotor rf = null;
     private DcMotor lb = null;
     private DcMotor rb = null;
+
+
     //private DcMotor duckMotor = null;
 
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 20;     // This is < 1.0 if geared UP
+    static final double DRIVE_GEAR_REDUCTION = 20/2;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -56,7 +63,9 @@ public class BasicAutonomous extends LinearOpMode {
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
-        telemetry.update();
+        telemetry.addData("Build Version: ","Thousand Winds V4");
+
+        //telemetry.update();
 
         lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -70,16 +79,19 @@ public class BasicAutonomous extends LinearOpMode {
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "GUD 2 GOU: (Initialized)");
-
+        telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
-        for (int i=0; i<5;i++) {
-            encoderTurn(TURN_SPEED,1,360);
-            sleep(200);
+        for (int i=0; i<3;i++) {
+            //encoderTurn(TURN_SPEED,1,360);
+            //encoderDrive(0.4, 1, 4 *Math.PI);
+            sleep(1000);
         }
-        encoderDrive(DRIVE_SPEED, 1, 11 );
+        encoderDrive(0.4, 1, 48 );
+
+        sleep(10000);
 
         //encoderStrafe(TURN_SPEED,1,20);
 
@@ -122,12 +134,16 @@ public class BasicAutonomous extends LinearOpMode {
         runtime.reset();
 
         lf.setPower(Math.abs(speed) * direction);
-        rf.setPower(Math.abs(speed) * -direction);
+        rf.setPower(Math.abs(speed) * direction);
         lb.setPower(Math.abs(speed) * direction);
-        rb.setPower(Math.abs(speed) * -direction);
+        rb.setPower(Math.abs(speed) * direction);
 
-        while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
+        while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.addData("Lf Encoder: " , lf.getCurrentPosition());
+            telemetry.addData("Rf Encoder: ", rf.getCurrentPosition());
+            telemetry.addData("Rb Encoder: ", rb.getCurrentPosition());
+            telemetry.addData("Lb Encoder: ", lb.getCurrentPosition());
             telemetry.update();
         }
         //stop Motion
@@ -172,10 +188,10 @@ public class BasicAutonomous extends LinearOpMode {
 
         runtime.reset();
 
-        lf.setPower(Math.abs(speed) * direction);
-        rf.setPower(Math.abs(speed) * -direction);
-        lb.setPower(Math.abs(speed) * direction);
-        rb.setPower(Math.abs(speed) * -direction);
+        lf.setPower(Math.abs(speed) * direction * LF_MULTIPLIER);
+        rf.setPower(Math.abs(speed) * -direction * RF_MULTIPLIER);
+        lb.setPower(Math.abs(speed) * direction * LB_MULTIPLIER);
+        rb.setPower(Math.abs(speed) * -direction * RB_MULTIPILER);
 
         while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
