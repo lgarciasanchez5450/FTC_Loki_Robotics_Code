@@ -75,11 +75,11 @@ public class BasicAutonomous extends LinearOpMode {
         waitForStart();
 
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
-        for (int i=0; i<10;i++) {
+        for (int i=0; i<5;i++) {
             encoderTurn(TURN_SPEED,1,360);
             sleep(200);
         }
-
+        encoderDrive(DRIVE_SPEED, 1, 11 );
 
         //encoderStrafe(TURN_SPEED,1,20);
 
