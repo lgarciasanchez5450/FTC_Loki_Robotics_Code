@@ -34,7 +34,8 @@ public class OpModeLokiFreight extends OpMode {
     private DcMotor lb = null;
     private DcMotor rb = null;
     private DcMotor duckMotor = null;
-    private DcMotor armMotor = null;
+    private DcMotor armMotor1 = null;
+    private DcMotor harvester = null;
     private Servo ClawServo = null;
     private double clawPos = 0;
     private double SpeedFactor = 2;
@@ -52,9 +53,11 @@ public class OpModeLokiFreight extends OpMode {
         rf = hardwareMap.get(DcMotor.class, "rf");
         lb  = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
-        duckMotor = hardwareMap.get(DcMotor.class, "duck");
-        armMotor = hardwareMap.get(DcMotor.class,"aRm");
-        ClawServo = hardwareMap.get(Servo.class,"claw");
+        duckMotor = hardwareMap.get(DcMotor.class,"duck");
+        armMotor1 = hardwareMap.get(DcMotor.class,"Arm1");
+        harvester = hardwareMap.get(DcMotor.class,"Harvester");
+        //ClawServo = hardwareMap.get(Servo.class,"claw");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -63,7 +66,12 @@ public class OpModeLokiFreight extends OpMode {
         lb.setDirection(DcMotor.Direction.FORWARD);
         rb.setDirection(DcMotor.Direction.REVERSE);
 
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armMotor2.setDirection(DcMotor.Direction.REVERSE);
+
+
+
+        armMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //armMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "GUD 2 GOU: (Initialized)");
@@ -97,6 +105,7 @@ public class OpModeLokiFreight extends OpMode {
         double rbp;
         double denominator;
         double armP = 0;
+        double harvesterP = 0;
 
         //set up vars for other motors' power
         double duckp;
@@ -128,9 +137,9 @@ public class OpModeLokiFreight extends OpMode {
         }
         //Claw Opening and Closing
         if (gamepad2.dpad_left) {
-            clawPos += .03;
+            harvesterP = -.3;
         } else if (gamepad2.dpad_right) {
-            clawPos -=.03;
+            harvesterP = .3;
         }
         clawPos = Range.clip(clawPos,0,1);
         ClawServo.setPosition(clawPos);
@@ -179,8 +188,8 @@ public class OpModeLokiFreight extends OpMode {
 
 
         duckMotor.setPower(duckp);
-        armMotor.setPower(armP);
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor1.setPower(armP);
+        harvester.setPower(harvesterP);
 
     }
 
