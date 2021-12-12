@@ -113,36 +113,37 @@ public class OpModeLokiFreight extends OpMode {
         //Gamepad 1 Controls
         //Robot Move Speed
         if (gamepad1.a) {
-            SpeedFactor = 3;
+            SpeedFactor = 6;
         } else if (gamepad1.b) {
-            SpeedFactor = 2;
+            SpeedFactor = 3;
         } else if (gamepad1.x) {
-            SpeedFactor = 1;
+            SpeedFactor = 2;
         }
         //Duck Spinner
         duckp = 0;
         if (gamepad1.left_bumper) {
-            duckp += .3;
+            duckp += .55;
         }
         if (gamepad1.right_bumper) {
-            duckp -= .3;
+            duckp -= .55;
         }
 
         //Gamepad 2 Controls
         //Arm Raising and Lowering
+        armP = 0;
         if (gamepad2.dpad_up) {
-            armP = .4;
-        } else if (gamepad2.dpad_down) {
             armP = -.4;
+        } else if (gamepad2.dpad_down) {
+            armP = .4;
         }
         //Claw Opening and Closing
         if (gamepad2.dpad_left) {
-            harvesterP = -.3;
+            harvesterP = -.6;
         } else if (gamepad2.dpad_right) {
-            harvesterP = .3;
+            harvesterP = .6;
         }
         clawPos = Range.clip(clawPos,0,1);
-        ClawServo.setPosition(clawPos);
+        //ClawServo.setPosition(clawPos);
         telemetry.addData("Claw at Pos:",clawPos);
 
         // Choose to drive using either Tank Mode, or POV Mode
@@ -150,9 +151,9 @@ public class OpModeLokiFreight extends OpMode {
 
         // POV Mode uses left stick to go forward, and right stick to turn.
         // - This uses basic math to combine motions and is easier to drive straight.
-        double strafe = gamepad1.left_stick_x * 1.2;
-        double drive  = -gamepad1.left_stick_y;
-        double turn   = gamepad1.right_stick_x;
+        double strafe = -gamepad1.left_stick_x * 1.2;
+        double drive  = gamepad1.left_stick_y;
+        double turn   = -gamepad1.right_stick_x;
 
         denominator = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn),1);
 

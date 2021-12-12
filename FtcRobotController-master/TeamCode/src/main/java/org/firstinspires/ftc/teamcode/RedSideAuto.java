@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-@Disabled
+
 @Autonomous(name = "Red Side Auto",group = "RED")
 public class RedSideAuto extends LinearOpMode {
 
@@ -70,14 +70,14 @@ public class RedSideAuto extends LinearOpMode {
 
         if (Side.equals("A")) {
             //Duck Side
-            timeStrafe( -.2,1);
-            timeDrive (-.2,3);
-            timeTurn(-.3,1.3);
-            timeStrafe(-.2,1.5);
-            turnDuckStart(-.2);
-            timeDrive(-.05,9);
+            timeStrafe( .4,1);
+            timeDrive (.2,4);
+            timeTurn(.3,1.1);
+            timeStrafe(.4,1);
+            turnDuckStart(.2);
+            timeDrive(.05,7);
             turnDuckStop();
-            timeDrive(.1,3);
+            timeDrive(-.25,1.5);
         } else if (Side.equals("B")) {
             //Warehouse Side
             timeStrafe(-.2,7);
