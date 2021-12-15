@@ -116,9 +116,9 @@ public class OpModeLokiFreight extends OpMode {
         if (gamepad1.a) {
             SpeedFactor = 6;
         } else if (gamepad1.b) {
-            SpeedFactor = 3;
-        } else if (gamepad1.x) {
             SpeedFactor = 2.5;
+        } else if (gamepad1.x) {
+            SpeedFactor = 1.66666;
         }
         //Duck Spinner
         duckp = 0;

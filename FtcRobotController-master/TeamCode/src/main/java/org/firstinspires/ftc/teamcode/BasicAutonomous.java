@@ -84,12 +84,8 @@ public class BasicAutonomous extends LinearOpMode {
         waitForStart();
 
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
-        for (int i=0; i<3;i++) {
-            //encoderTurn(TURN_SPEED,1,360);
-            //encoderDrive(0.4, 1, 4 *Math.PI);
-            sleep(1000);
-        }
-        encoderDrive(0.4, 1, 48 );
+
+        encoderDrive(0.4, -1, 48 );
 
         sleep(10000);
 
