@@ -99,6 +99,7 @@ public class OpModeLokiFreight extends OpMode {
     public void loop() {
         // Setup a variable for each dr
         // set up vars for each wheel's power
+
         double lfp;
         double rfp;
         double lbp;
@@ -117,7 +118,7 @@ public class OpModeLokiFreight extends OpMode {
         } else if (gamepad1.b) {
             SpeedFactor = 3;
         } else if (gamepad1.x) {
-            SpeedFactor = 2;
+            SpeedFactor = 2.5;
         }
         //Duck Spinner
         duckp = 0;
@@ -130,19 +131,14 @@ public class OpModeLokiFreight extends OpMode {
 
         //Gamepad 2 Controls
         //Arm Raising and Lowering
-        armP = 0;
-        if (gamepad2.dpad_up) {
-            armP = -.4;
-        } else if (gamepad2.dpad_down) {
-            armP = .4;
-        }
+
+        armP = Math.pow(gamepad2.left_stick_y,2) * .4;
+
+
         //Claw Opening and Closing
-        if (gamepad2.dpad_left) {
-            harvesterP = -.6;
-        } else if (gamepad2.dpad_right) {
-            harvesterP = .6;
-        }
-        clawPos = Range.clip(clawPos,0,1);
+        harvesterP = gamepad2.right_stick_y *.8;
+
+        //clawPos = Range.clip(clawPos,0,1);
         //ClawServo.setPosition(clawPos);
         telemetry.addData("Claw at Pos:",clawPos);
 
@@ -157,19 +153,15 @@ public class OpModeLokiFreight extends OpMode {
 
         denominator = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn),1);
 
-        //lfp = Range.clip(drive - turn + strafe, -1.0, 1.0);
-        //rfp = Range.clip(drive + turn - strafe, -1.0, 1.0);
-        //lbp = Range.clip(drive - turn - strafe, -1.0, 1.0);
-        //rbp = Range.clip(drive + turn + strafe, -1.0, 1.0);
         lfp = (drive + turn + strafe) / denominator;
         rfp = (drive - turn - strafe) / denominator;
         lbp = (drive + turn - strafe) / denominator;
         rbp = (drive - turn + strafe) / denominator;
 
-        lfp = lfp/SpeedFactor;
-        rfp = rfp/SpeedFactor;
-        lbp = lbp/SpeedFactor;
-        rbp = rbp/SpeedFactor;
+        lfp /= SpeedFactor;
+        rfp /= SpeedFactor;
+        lbp /= SpeedFactor;
+        rbp /= SpeedFactor;
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -197,6 +189,14 @@ public class OpModeLokiFreight extends OpMode {
     /*
      * Code to run ONCE after the driver hits STOP
      */
+    public void SpeedThing() {
+        boolean running = true;
+        while (running) {
+            telemetry.addData("Please select each ", "Bop");
+            telemetry.update();
+
+        }
+    }
     @Override
     public void stop() {
     }
