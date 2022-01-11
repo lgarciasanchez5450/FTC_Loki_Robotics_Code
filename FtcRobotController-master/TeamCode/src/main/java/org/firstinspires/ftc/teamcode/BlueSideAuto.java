@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-@Disabled
+//@Disabled
 @Autonomous(name = "Blue Side Auto",group = "BLUE")
 public class BlueSideAuto extends LinearOpMode {
 
@@ -60,7 +60,7 @@ public class BlueSideAuto extends LinearOpMode {
 
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "F*** the Encoders");
+        telemetry.addData("Status", "F*** the Encoders V2");
         telemetry.update();
 
         lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -71,15 +71,16 @@ public class BlueSideAuto extends LinearOpMode {
         waitForStart();
 
         if (Side.equals("A")) {
+            telemetry.addData("Current Auto" , "Blue Side Ducks");
             //timeStrafe(-.2, 1);//if you want time in decimals then add a (long) before the decimal
-            timeDrive(.3, 1.5);
+            timeDrive(.4, 1.3);
             timeStrafe(.2,1);
             turnDuckStart(-.4);
-            timeDrive(.07, 7);
+            timeDrive(.05, 7);
             turnDuckStop();
-            timeStrafe(-.15, 1);
-            timeStrafe(-.2, 4);
-            timeDrive(.1, 1);
+            //timeStrafe(.15, 1);
+            timeStrafe(-.4, 2.25);
+            //timeDrive(.1, 1);
         } else if (Side.equals("B")) {
             timeStrafe( -.2,1);//if you want to put time in decimals then add a (long) before the num
             timeStrafe(.2,2.5);

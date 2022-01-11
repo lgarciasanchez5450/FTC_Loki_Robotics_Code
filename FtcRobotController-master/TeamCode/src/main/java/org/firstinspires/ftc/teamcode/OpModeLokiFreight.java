@@ -114,12 +114,14 @@ public class OpModeLokiFreight extends OpMode {
         //Gamepad 1 Controls
         //Robot Move Speed
         if (gamepad1.a) {
-            SpeedFactor = 6;
+            SpeedFactor = 1;
         } else if (gamepad1.b) {
-            SpeedFactor = 2.5;
+            SpeedFactor = 0.5;
         } else if (gamepad1.x) {
-            SpeedFactor = 1.66666;
+            SpeedFactor = 0.25;
         }
+
+        telemetry.addData("Speed Factor", SpeedFactor);
         //Duck Spinner
         duckp = 0;
         if (gamepad1.left_bumper) {
@@ -132,11 +134,8 @@ public class OpModeLokiFreight extends OpMode {
         //Gamepad 2 Controls
         //Arm Raising and Lowering
 
-        armP = Math.pow(gamepad2.left_stick_y,2) * .4;
+        armP = Math.pow(gamepad2.left_stick_y,3) * .5;
 
-
-        //Claw Opening and Closing
-        harvesterP = gamepad2.right_stick_y *.8;
 
         //clawPos = Range.clip(clawPos,0,1);
         //ClawServo.setPosition(clawPos);
@@ -158,10 +157,10 @@ public class OpModeLokiFreight extends OpMode {
         lbp = (drive + turn - strafe) / denominator;
         rbp = (drive - turn + strafe) / denominator;
 
-        lfp /= SpeedFactor;
-        rfp /= SpeedFactor;
-        lbp /= SpeedFactor;
-        rbp /= SpeedFactor;
+        lfp *= SpeedFactor;
+        rfp *= SpeedFactor;
+        lbp *= SpeedFactor;
+        rbp *= SpeedFactor;
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -180,9 +179,10 @@ public class OpModeLokiFreight extends OpMode {
         telemetry.update();
 
 
+
         duckMotor.setPower(duckp);
         armMotor1.setPower(armP);
-        harvester.setPower(harvesterP);
+        harvester.setPower(gamepad2.right_stick_y);
 
     }
 
