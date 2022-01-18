@@ -56,7 +56,7 @@ public class OpModeLokiFreight extends OpMode {
         duckMotor = hardwareMap.get(DcMotor.class,"duck");
         armMotor1 = hardwareMap.get(DcMotor.class,"Arm1");
         harvester = hardwareMap.get(DcMotor.class,"Harvester");
-        //ClawServo = hardwareMap.get(Servo.class,"claw");
+        //ClawServo = hardwareMap.  get(Servo.class,"claw");
 
 
         // Most robots need the motor on one side to be reversed to drive forward

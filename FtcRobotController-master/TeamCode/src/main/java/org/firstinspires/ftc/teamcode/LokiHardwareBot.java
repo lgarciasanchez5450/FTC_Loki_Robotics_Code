@@ -100,18 +100,22 @@ public class LokiHardwareBot
         lb.setPower(0);
         rb.setPower(0);
         harvester.setPower(0);
+        armMotor.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         harvester.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        leftClaw  = hwMap.get(Servo.class, "left_hand");
-        rightClaw = hwMap.get(Servo.class, "right_hand");
-        leftClaw.setPosition(MID_SERVO);
-        rightClaw.setPosition(MID_SERVO);
+        //leftClaw  = hwMap.get(Servo.class, "left_hand");
+        //rightClaw = hwMap.get(Servo.class, "right_hand");
+        //leftClaw.setPosition(MID_SERVO);
+        //rightClaw.setPosition(MID_SERVO);
     }
 }
 
