@@ -23,15 +23,14 @@ public class BasicAutonomous extends LinearOpMode {
 
 
     //private DcMotor duckMotor = null;
-    static double pi = Math.PI;
+    static final double pi = Math.PI;
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 20/2;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 4;     // For figuring circumference
+    static final double DRIVE_GEAR_REDUCTION = 10;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 3.75;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * pi);
     static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.2;
-
     @Override
     public void runOpMode() {
 
@@ -102,7 +101,7 @@ public class BasicAutonomous extends LinearOpMode {
 
     }
 
-    public void encoderDrive(double speed, double direction, double newTargetInches) {
+    public void encoderDrive(double speed, double direction, double Inches) {
         //speed is the speed at which the robot moves
         //direction clarifies whether it is moving forwards or backwards
         //newTargetInches is how far to move
@@ -112,10 +111,10 @@ public class BasicAutonomous extends LinearOpMode {
         int newlbTarget;
         int newrbTarget;
 
-        newlfTarget = lf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newrfTarget = rf.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newlbTarget = lb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
-        newrbTarget = rb.getCurrentPosition() + (int)(newTargetInches * COUNTS_PER_INCH);
+        newlfTarget = lf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
 
         lf.setTargetPosition(newlfTarget);
         rf.setTargetPosition(newrfTarget);
