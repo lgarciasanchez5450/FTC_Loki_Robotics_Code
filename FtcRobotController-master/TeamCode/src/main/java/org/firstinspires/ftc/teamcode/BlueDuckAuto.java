@@ -9,7 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Disabled
 @Autonomous(name="Blue Duck Auto",group= "Blue Side")
-public class BlueDuckAuto extends LinearOpMode {
+public class BlueDuckAuto extends Auto_Abstract {
+
+
 
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
