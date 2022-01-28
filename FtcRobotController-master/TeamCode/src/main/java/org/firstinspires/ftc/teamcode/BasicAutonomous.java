@@ -10,10 +10,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="Basic Auto",group= "stuff")
 public class BasicAutonomous extends LinearOpMode {
 
-    static  final double LF_MULTIPLIER = 1;//(523/556) * 1;
-    static final double RF_MULTIPLIER = 1;//(523/523) * 1;
-    static final double RB_MULTIPILER = 1;//(523/536) * (546/548);
-    static final double LB_MULTIPLIER = 1;//(523/540) * (546/555);
+    static  final double LF_MULTIPLIER = (523/556) * 1;
+    static final double RF_MULTIPLIER = (523/523) * 1;
+    static final double RB_MULTIPILER = (523/536) * (546/548);
+    static final double LB_MULTIPLIER = (523/540) * (546/555);
 
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
@@ -25,8 +25,8 @@ public class BasicAutonomous extends LinearOpMode {
     //private DcMotor duckMotor = null;
     static final double pi = Math.PI;
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 20;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 3.97638;     // For figuring circumference
+    static final double DRIVE_GEAR_REDUCTION = 10;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 3.75;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * pi);
     static final double DRIVE_SPEED = 0.6;
@@ -84,7 +84,7 @@ public class BasicAutonomous extends LinearOpMode {
 
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
 
-        encoderDrive(0.1, -1, 48 );
+        encoderDrive(0.4, -1, 48 );
 
         sleep(10000);
 
@@ -117,23 +117,23 @@ public class BasicAutonomous extends LinearOpMode {
         newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
 
         lf.setTargetPosition(newlfTarget);
-        //rf.setTargetPosition(newrfTarget);
-        //lb.setTargetPosition(newlbTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
         rb.setTargetPosition(newrbTarget);
 
         lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         runtime.reset();
 
         lf.setPower(Math.abs(speed) * direction);
-        //rf.setPower(Math.abs(speed) * direction);
-        //lb.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * direction);
+        lb.setPower(Math.abs(speed) * direction);
         rb.setPower(Math.abs(speed) * direction);
 
-        while (lf.isBusy() || rb.isBusy()) {
+        while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
             telemetry.addData("Lf Encoder: " , lf.getCurrentPosition());
             telemetry.addData("Rf Encoder: ", rf.getCurrentPosition());
