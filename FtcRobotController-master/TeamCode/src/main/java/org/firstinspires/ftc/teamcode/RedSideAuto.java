@@ -18,6 +18,11 @@ public class RedSideAuto extends LinearOpMode {
     private String Side;
     private int speed;
 
+
+    static final int RIGHT = 1;
+    static final int LEFT = -1;
+    static final int FORWARD = 1;
+    static final int BACKWARD = -1;
     static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -70,14 +75,17 @@ public class RedSideAuto extends LinearOpMode {
 
         if (Side.equals("A")) {
             //Duck Side
-            timeStrafe( .4,1);
-            timeDrive (.2,4);
-            timeTurn(.3,1.1);
-            timeStrafe(.4,1);
-            turnDuckStart(.2);
-            timeDrive(.05,7);
-            turnDuckStop();
-            timeDrive(-.25,1.5);
+//            timeStrafe( .4,1);
+//            timeDrive (.2,4);
+//            timeTurn(.3,1.1);
+//            timeStrafe(.4,1);
+//            turnDuckStart(.2);
+//            timeDrive(.05,7);
+//            turnDuckStop();
+//            timeDrive(-.25,1.5);
+
+
+
         } else if (Side.equals("B")) {
             //Warehouse Side
             timeStrafe(-.2,7);
@@ -151,6 +159,58 @@ public class RedSideAuto extends LinearOpMode {
         rf.setPower(0);
         lb.setPower(0);
         rb.setPower(0);
+    }
+    public void eDrive(double inches,int direction, double power) {
+        //int direction = 0;
+
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * direction);
+        lb.setPower(Math.abs(speed) * direction);
+        rb.setPower(Math.abs(speed) * direction);
+
+        while (lf.isBusy() || rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.addData("Lf Encoder: " , lf.getCurrentPosition());
+            telemetry.addData("Rf Encoder: ", rf.getCurrentPosition());
+            telemetry.addData("Rb Encoder: ", rb.getCurrentPosition());
+            telemetry.addData("Lb Encoder: ", lb.getCurrentPosition());
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+
     }
     public void turnDuckStart(double power) {
         duckMotor.setPower(power);
