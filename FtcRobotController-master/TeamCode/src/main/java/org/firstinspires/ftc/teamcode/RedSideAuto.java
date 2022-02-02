@@ -12,12 +12,13 @@ public class RedSideAuto extends AutoAbstract {
 
     @Override
     public void runOpMode() {
-
+        setupMotors();
         //
         String Side = getAutoType();
         String ParkSide = getParkSide();
+        long Delay = getDelay();
         waitForStart();
-
+        sleep(Delay);
         if (Side.equals("A")) {//Red-Park
             if (ParkSide.equals("A")) {
                 encoderDrive(.5,1,24);

@@ -30,7 +30,7 @@ public abstract class AutoAbstract extends LinearOpMode {
     }
 
     public long getDelay() {
-        int delay = 0;
+        long delay = 0;
         boolean done = false;
         String button;
         while (!done) {
@@ -39,6 +39,7 @@ public abstract class AutoAbstract extends LinearOpMode {
             telemetry.addLine("X: +100 ms");
             telemetry.addLine("Y: -100 ms");
             telemetry.addLine("A: Done!");
+            telemetry.update();
             button = getPress();
             if (button.equals("X")) {
                 delay += 100;
@@ -53,6 +54,7 @@ public abstract class AutoAbstract extends LinearOpMode {
                 telemetry.update();
                 sleep(500);
             }
+            sleep(500);
         }
         return delay;
     }
