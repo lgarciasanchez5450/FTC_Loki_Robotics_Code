@@ -259,6 +259,24 @@ public abstract class AutoAbstract extends LinearOpMode {
     public int getDuckPos() {
         return 1;
     }
+    public String getParkSide() {
+        String button;
+        telemetry.addLine("Where are we going to park");
+        telemetry.addLine("A: Warehouse Side");
+        telemetry.addLine("B: Depot");
+        telemetry.update();
+        button = getPress();
+        telemetry.addLine("You pressed: " + button);
+        if (button.equals("X") || button.equals("Y")) {
+            telemetry.addLine("R U DUM!?! That's not an expected answer please try again");
+            telemetry.update();
+            sleep(1000);
+            button = getParkSide();
+        }
+        telemetry.update();
+        return button;
+
+    }
 
 
 }
