@@ -180,5 +180,86 @@ public abstract class AutoAbstract extends LinearOpMode {
         lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public String getAutoType() {
+        String button;
+        telemetry.addLine("What are we going to do?");
+        telemetry.addLine("A: Red-Park");
+        telemetry.addLine("B: Red-Carousel-Park");
+        telemetry.addLine("X: Red-Hub-Park");
+        telemetry.addLine("Y: Red-Carousel-Hub-Park");
+        telemetry.update();
+        button = getPress();
+        telemetry.addLine("You pressed: " + button);
+        telemetry.update();
+        return button;
+
+    }
+    public String getPress() {
+        String whatReturned = "None";
+        while(whatReturned.equals("None")) {
+            if (gamepad1.a) {
+                whatReturned = "A";
+            }
+            else if (gamepad1.b) {
+                whatReturned = "B";
+            }
+            else if (gamepad1.x) {
+                whatReturned = "X";
+            }
+            else if (gamepad1.y) {
+                whatReturned = "Y";
+
+            }
+        }
+        return whatReturned;
+
+    }
+    public void timeDrive(double power, double timeSecs) {
+        lf.setPower(power);
+        rf.setPower(power);
+        lb.setPower(power);
+        rb.setPower(power);
+        sleep((long)(timeSecs * 1000));
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+    }
+    public void timeStrafe(double power, double timeSecs) {
+        /* if power is positive it will strafe right, if negative it will strafe left */
+        lf.setPower(power);
+        rf.setPower(-power);
+        lb.setPower(-power);
+        rb.setPower(power);
+        sleep((long)(timeSecs * 1000));
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+    }
+    public void timeTurn(double power, double timeSecs) {
+        /* if power is positive it will turn clockwise, if negative turn is counter-clockwise */
+        lf.setPower(power);
+        rf.setPower(-power);
+        lb.setPower(power);
+        rb.setPower(-power);
+        sleep((long)(timeSecs * 1000));
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+    }
+    public void turnDuckStart(double power) {
+        duckMotor.setPower(power);
+    }
+    public void turnDuckStop() {
+        duckMotor.setPower(0);
+    }
+
+    public int getDuckPos() {
+        return 1;
+    }
+
+
 }
 
