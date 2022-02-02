@@ -11,6 +11,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name = "Blue Side Auto",group = "BLUE")
 public class BlueSideAuto extends LinearOpMode {
 
+    static  final double LF_MULTIPLIER = 1;
+    static final double RF_MULTIPLIER = 1;
+    static final double RB_MULTIPILER = 1;
+    static final double LB_MULTIPLIER = 1;
+
+    static final boolean RIGHT = true;
+    static final boolean LEFT = false;
+
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
     private DcMotor rf = null;
@@ -60,15 +68,21 @@ public class BlueSideAuto extends LinearOpMode {
 
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "F*** the Encoders V2");
+        telemetry.addData("Status", "Praise the encoders V1");
         telemetry.update();
 
-        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Side = getSide();
         waitForStart();
+        estrafe(60,false, .3);
+
+        duckMotor.setPower(-0.3);
+        estrafe(84,true,.3);
+
+
 
         if (Side.equals("A")) {
             telemetry.addData("Current Auto" , "Blue Side Ducks");
@@ -155,6 +169,163 @@ public class BlueSideAuto extends LinearOpMode {
         rf.setPower(0);
         lb.setPower(0);
         rb.setPower(0);
+    }
+    public void eDrive (double inches, boolean Direction, double power){
+        int direction = 0;
+        if (Direction) {
+             direction = 1;
+        } else if (!Direction) {
+             direction = -1;
+        }
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * direction);
+        lb.setPower(Math.abs(speed) * direction);
+        rb.setPower(Math.abs(speed) * direction);
+
+        while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.addData("Lf Encoder: " , lf.getCurrentPosition());
+            telemetry.addData("Rf Encoder: ", rf.getCurrentPosition());
+            telemetry.addData("Rb Encoder: ", rb.getCurrentPosition());
+            telemetry.addData("Lb Encoder: ", lb.getCurrentPosition());
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+    }
+    public void eturn (double degree, boolean Direction, double power){
+
+        int direction = 0;
+        if (Direction) {
+            direction = 1;
+        } else if (!Direction) {
+            direction = -1;
+        }
+        //degree /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP MY FOOT ON THE FLOOR FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(degree * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() - (int)(degree * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(degree * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() - (int)(degree * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction * LF_MULTIPLIER);
+        rf.setPower(Math.abs(speed) * -direction * RF_MULTIPLIER);
+        lb.setPower(Math.abs(speed) * direction * LB_MULTIPLIER);
+        rb.setPower(Math.abs(speed) * -direction * RB_MULTIPILER);
+
+        while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is moving!");
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void estrafe(double inches, boolean Direction, double power){
+
+        int direction = 0;
+        if (Direction) {
+            direction = 1;
+        } else if (!Direction) {
+            direction = -1;
+        }
+
+        int newlfTarget;
+        int newrfTarget;
+        int newlbTarget;
+        int newrbTarget;
+
+        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+
+        lf.setTargetPosition(newlfTarget);
+        rf.setTargetPosition(newrfTarget);
+        lb.setTargetPosition(newlbTarget);
+        rb.setTargetPosition(newrbTarget);
+
+        lf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rf.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        lf.setPower(Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * -direction);
+        lb.setPower(Math.abs(speed) * -direction);
+        rb.setPower(Math.abs(speed) * direction);
+
+        while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
+            telemetry.addData("Hello","Da Robot is mooing!");
+            telemetry.update();
+        }
+        //stop Motion
+        lf.setPower(0);
+        rf.setPower(0);
+        lb.setPower(0);
+        rb.setPower(0);
+
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
     public void turnDuckStart(double power) {
         duckMotor.setPower(power);

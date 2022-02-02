@@ -86,7 +86,7 @@ public class BasicAutonomous extends LinearOpMode {
 
         encoderDrive(0.4, -1, 48 );
 
-        //sleep(10000);
+        sleep(10000);
 
         //encoderStrafe(TURN_SPEED,1,20);
 
