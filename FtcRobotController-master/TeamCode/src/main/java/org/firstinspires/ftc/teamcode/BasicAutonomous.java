@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 //@Disabled
 @Autonomous(name="Basic Auto",group= "stuff")
-public class BasicAutonomous extends LinearOpMode {
+public class BasicAutonomous extends Auto_Abstract {
 
     static  final double LF_MULTIPLIER = (523/556) * 1;
     static final double RF_MULTIPLIER = (523/523) * 1;
@@ -85,6 +85,10 @@ public class BasicAutonomous extends LinearOpMode {
         //encoderDrive(TURN_SPEED,1,20); //theoretically should move forwards at DRIVE_SPEED 20 inches
 
         encoderDrive(0.4, -1, 48 );
+
+        //encoderDrive(0.4, 1, 32);
+
+
 
         sleep(10000);
 
