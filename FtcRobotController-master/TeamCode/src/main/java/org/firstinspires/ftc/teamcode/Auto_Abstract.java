@@ -396,7 +396,7 @@ public abstract class Auto_Abstract extends LinearOpMode {
         sleep(time);
         ls.setPower(0);
     }
-    static int countMotorsBusy(DcMotor... motors) {
+    static int countMotorsBusy(DcMotor... motors) { //motors
         int count = 0;
         for(final DcMotor motor : motors) {
             if (motor.isBusy()) {
@@ -404,6 +404,14 @@ public abstract class Auto_Abstract extends LinearOpMode {
             }
         }
         return count;
+        //python version of what is above
+        //def countMotorsBusy(*motors:DcMotor):
+
+        //count = 0
+        //for motor in motors:
+        //  if motor.isBusy():
+        //    count += 1
+        //return count
     }
 
     public void resetEncoders(DcMotor[] temp){
