@@ -29,7 +29,33 @@ public abstract class AutoAbstract extends LinearOpMode {
         duckMotor = hardwareMap.get(DcMotor.class, "duck");
     }
 
-
+    public long getDelay() {
+        int delay = 0;
+        boolean done = false;
+        String button;
+        while (!done) {
+            telemetry.addLine("How long should I wait before starting?");
+            telemetry.addData("Current Delay in milliseconds: ",delay);
+            telemetry.addLine("X: +100 ms");
+            telemetry.addLine("Y: -100 ms");
+            telemetry.addLine("A: Done!");
+            button = getPress();
+            if (button.equals("X")) {
+                delay += 100;
+            } else if (button.equals("Y")) {
+                if (delay != 0) {
+                    delay -= 100;
+                }
+            } else if (button.equals("A")) {
+                done = true;
+            } else if (button.equals("B")) {
+                telemetry.addLine("That is not a valid input!");
+                telemetry.update();
+                sleep(500);
+            }
+        }
+        return delay;
+    }
 
     public void encoderDrive(double speed, double direction, double Inches) {
         //speed is the speed at which the robot moves
