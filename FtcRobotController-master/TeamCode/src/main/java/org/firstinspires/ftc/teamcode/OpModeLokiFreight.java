@@ -25,7 +25,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Basic Freight OpMode", group="Iterative Opmode")
-//@Disabled
+
+@Disabled
 public class OpModeLokiFreight extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

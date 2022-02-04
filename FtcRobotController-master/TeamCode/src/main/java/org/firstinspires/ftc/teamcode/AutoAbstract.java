@@ -18,7 +18,7 @@ public abstract class AutoAbstract extends LinearOpMode {
     private DcMotor rf = null;
     private DcMotor lb = null;
     private DcMotor rb = null;
-    private DcMotor duckMotor = null;
+    //private DcMotor duckMotor = null;
     private String Side;
     private int speed;
     public void setupMotors() {
@@ -26,7 +26,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         rf = hardwareMap.get(DcMotor.class, "rf");
         lb  = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
-        duckMotor = hardwareMap.get(DcMotor.class, "duck");
+        //duckMotor = hardwareMap.get(DcMotor.class, "duck");
     }
 
     public long getDelay() {
@@ -118,16 +118,17 @@ public abstract class AutoAbstract extends LinearOpMode {
         //newTargetInches is how far to move
         //This is all new and not tested yet
 
-        angle /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP MY FOOT ON THE FLOOR FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //angle /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP MY FOOT ON THE FLOOR FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        double inches = (10*Math.PI)/(360/angle);
         int newlfTarget;
         int newrfTarget;
         int newlbTarget;
         int newrbTarget;
 
-        newlfTarget = lf.getCurrentPosition() + (int)(angle * COUNTS_PER_INCH);
-        newrfTarget = rf.getCurrentPosition() - (int)(angle * COUNTS_PER_INCH);
-        newlbTarget = lb.getCurrentPosition() + (int)(angle * COUNTS_PER_INCH);
-        newrbTarget = rb.getCurrentPosition() - (int)(angle * COUNTS_PER_INCH);
+        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrfTarget = rf.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
+        newlbTarget = lb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
+        newrbTarget = rb.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
 
         lf.setTargetPosition(newlfTarget);
         rf.setTargetPosition(newrfTarget);
@@ -141,10 +142,10 @@ public abstract class AutoAbstract extends LinearOpMode {
 
         runtime.reset();
 
-        lf.setPower(Math.abs(speed) *  direction);
-        rf.setPower(Math.abs(speed) * -direction);
-        lb.setPower(Math.abs(speed) *  direction);
-        rb.setPower(Math.abs(speed) * -direction);
+        lf.setPower(speed);
+        rf.setPower(-1*speed);
+        lb.setPower(-1*speed);
+        rb.setPower(speed);
 
         while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
@@ -278,10 +279,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         rb.setPower(0);
     }
     public void turnDuckStart(double power) {
-        duckMotor.setPower(power);
+        //duckMotor.setPower(power);
     }
     public void turnDuckStop() {
-        duckMotor.setPower(0);
+        //duckMotor.setPower(0);
     }
 
     public int getDuckPos() {

@@ -8,16 +8,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
-@Autonomous(name = "Blue Park Auto",group = "BLUE")
+@Autonomous(name = "Turn 360",group = "BLUE")
 public class BluePark extends AutoAbstract{
 
     @Override
     public void runOpMode() {
         setupMotors();
         waitForStart();
-        encoderDrive(.5,1,24);
-        encoderStrafe(.5,-1,30);
-        encoderDrive(.5,1,24);
+        encoderTurn(.3,1,360);
 
     }
 }

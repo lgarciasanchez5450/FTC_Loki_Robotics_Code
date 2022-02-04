@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
-public class Loki_Freight_Frenzy_TeleOp extends LinearOpMode {
+@TeleOp(name="Franken TeleOp", group="Iterative Opmode")
+public class Franken_TeleOp extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
@@ -19,7 +20,7 @@ public class Loki_Freight_Frenzy_TeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "We're reving to go!");
         telemetry.update();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -51,6 +52,14 @@ public class Loki_Freight_Frenzy_TeleOp extends LinearOpMode {
             double lbPower;
             double denominator;
 
+            if (gamepad1.a) {
+                SpeedFactor = 1;
+            } else if (gamepad1.b) {
+                SpeedFactor = 0.5;
+            } else if (gamepad1.x) {
+                SpeedFactor = 0.25;
+            }
+
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
@@ -58,14 +67,14 @@ public class Loki_Freight_Frenzy_TeleOp extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn  =  gamepad1.right_stick_x;
-            double strafe = -gamepad1.left_stick_x * 1.2;
+            double strafe = gamepad1.left_stick_x * 1.2;
 
             denominator = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn),1);
 
             lfPower = (drive + turn + strafe)/denominator;
             rfPower = (drive - turn - strafe)/denominator;
-            rbPower = (drive - turn - strafe)/denominator;
-            lbPower = (drive + turn + strafe)/denominator;
+            rbPower = (drive - turn + strafe)/denominator;
+            lbPower = (drive + turn - strafe)/denominator;
 
             lfPower *= SpeedFactor;
             rfPower *= SpeedFactor;
