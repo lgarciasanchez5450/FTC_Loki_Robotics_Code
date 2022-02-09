@@ -10,7 +10,7 @@ public abstract class AutoAbstract extends LinearOpMode {
 
     static final double pi = Math.PI;
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 10;     // This is < 1.0 if geared UP
+    static final double DRIVE_GEAR_REDUCTION = 20;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 3.75;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * pi);
 
@@ -124,7 +124,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         //This is all new and not tested yet
 
         //angle /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP MY FOOT ON THE FLOOR FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        double inches = (10*Math.PI)/(360/angle);
+        double inches = (18.75*Math.PI)/(360/angle);
         int newlfTarget;
         int newrfTarget;
         int newlbTarget;
