@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //@Disabled
@@ -27,6 +28,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         lb  = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
         //duckMotor = hardwareMap.get(DcMotor.class, "duck");
+        lf.setDirection(DcMotor.Direction.FORWARD);
+        rf.setDirection(DcMotor.Direction.REVERSE);
+        lb.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public long getDelay() {
@@ -144,8 +149,8 @@ public abstract class AutoAbstract extends LinearOpMode {
 
         lf.setPower(speed);
         rf.setPower(-1*speed);
-        lb.setPower(-1*speed);
-        rb.setPower(speed);
+        lb.setPower(speed);
+        rb.setPower(-1*speed);
 
         while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
