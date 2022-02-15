@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
-@Autonomous(name="GO CRAZY!",group= "Down Side")
+
+@Autonomous(name="Test Opload",group= "Down Side")
 public class GoCrazyAuto extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
