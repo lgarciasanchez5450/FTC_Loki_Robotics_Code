@@ -30,12 +30,12 @@ package org.firstinspires.ftc.teamcode;
  */
 
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.sun.tools.javac.tree.DCTree;
 
 /**
  * This is NOT an opmode.
@@ -59,10 +59,11 @@ public class LokiHardwareBot
     public DcMotor lf = null;
     public DcMotor rf = null;
     public DcMotor lb, rb = null;
-    public DcMotor harvester, armMotor = null;
+    public DcMotor harvester1, harvester2, slideMotor, duckMotor = null;
 
-    public Servo    leftClaw    = null;
-    public Servo    rightClaw   = null;
+    public Servo dumpServo = null;
+
+
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
@@ -88,8 +89,14 @@ public class LokiHardwareBot
         lb = hwMap.get(DcMotor.class, "lb");
         rb = hwMap.get(DcMotor.class, "rb");
 
-        harvester = hwMap.get(DcMotor.class, "Harvester");
-        armMotor = hwMap.get(DcMotor.class, "Arm1");
+        harvester1 = hwMap.get(DcMotor.class, "Harvester1");
+        harvester2 = hwMap.get(DcMotor.class, "Harvester2");
+        slideMotor = hwMap.get(DcMotor.class, "SlideMotor");
+
+        dumpServo = hwMap.get(Servo.class, "dumpServo");
+
+        duckMotor = hwMap.get(DcMotor.class, "duckServo");
+
         lf.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rf.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -99,8 +106,10 @@ public class LokiHardwareBot
         rf.setPower(0);
         lb.setPower(0);
         rb.setPower(0);
-        harvester.setPower(0);
-        armMotor.setPower(0);
+        harvester1.setPower(0);
+        harvester2.setPower(0);
+        slideMotor.setPower(0);
+        duckMotor.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -108,8 +117,11 @@ public class LokiHardwareBot
         rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        harvester.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        harvester1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        harvester2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
 
         // Define and initialize ALL installed servos.
         //leftClaw  = hwMap.get(Servo.class, "left_hand");
