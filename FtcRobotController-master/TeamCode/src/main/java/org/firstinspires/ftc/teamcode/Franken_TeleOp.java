@@ -16,6 +16,11 @@ public class Franken_TeleOp extends LinearOpMode {
     private DcMotor rf = null;
     private DcMotor rb = null;
     private DcMotor lb = null;
+    private DcMotor harvester_left = null;
+    private DcMotor harvester_right = null;
+    private DcMotor duck_motor = null;
+    private DcMotor arm = null;
+    private Servo dumper =null;
     private double SpeedFactor = 2;
 
     @Override
@@ -30,6 +35,11 @@ public class Franken_TeleOp extends LinearOpMode {
         rf = hardwareMap.get(DcMotor.class, "rf");
         rb = hardwareMap.get(DcMotor.class, "rb");
         lb = hardwareMap.get(DcMotor.class, "lb");
+        harvester_left = hardwareMap.get(DcMotor.class, "Harvester1");
+        harvester_right = hardwareMap.get(DcMotor.class, "Harvester2");
+        duck_motor = hardwareMap.get(DcMotor.class, "duckMotor");
+        arm = hardwareMap.get(DcMotor.class, "SlideMotor");
+        dumper = hardwareMap.get(Servo.class, "dumpServo");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -37,6 +47,10 @@ public class Franken_TeleOp extends LinearOpMode {
         rf.setDirection(DcMotor.Direction.REVERSE);
         rb.setDirection(DcMotor.Direction.REVERSE);
         lb.setDirection(DcMotor.Direction.FORWARD);
+        harvester_left.setDirection(DcMotor.Direction.FORWARD);
+        harvester_right.setDirection(DcMotor.Direction.FORWARD);
+        duck_motor.setDirection(DcMotor.Direction.FORWARD);
+        arm.setDirection(DcMotorSimple.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -96,6 +110,37 @@ public class Franken_TeleOp extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", lfPower, rfPower, rbPower, lbPower);
             telemetry.update();
+
+            if (gamepad2.left_bumper) {
+                harvester_left.setPower(0.5);
+            } else if (gamepad2.right_bumper) {
+                harvester_left.setPower(-0.5);
+            }
+
+            if (gamepad2.left_trigger > 0.5) {
+                harvester_right.setPower(0.5);
+            } else if (gamepad2.right_trigger > 0.5) {
+                harvester_right.setPower(-0.5);
+            }
+
+            if (gamepad2.dpad_left){
+                duck_motor.setPower(-0.5);
+            } else if (gamepad2.dpad_right){
+                duck_motor.setPower(0.5);
+            }
+
+            if (gamepad2.left_stick_y > 0.5) {
+                arm.setPower(0.5);
+            } else if (gamepad2.left_stick_y < -0.5) {
+                arm.setPower(-0.5);
+            }
+
+            if (gamepad2.a) {
+                dumper.setPosition(1);
+            } else if (gamepad2.b) {
+                dumper.setPosition(0);
+            }
+
         }
     }
 }
