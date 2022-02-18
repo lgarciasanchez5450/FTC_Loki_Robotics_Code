@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode;
  */
 
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -73,6 +74,9 @@ public class LokiHardwareBot
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
+    public RevBlinkinLedDriver lights;
+
+
     /* Constructor */
     public LokiHardwareBot(){
 
@@ -82,6 +86,12 @@ public class LokiHardwareBot
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+
+
+        lights = hwMap.get(RevBlinkinLedDriver.class, "lights");
+        lights.resetDeviceConfigurationForOpMode();
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+
 
         // Define and Initialize Motors
         lf = hwMap.get(DcMotor.class, "lf");
@@ -95,7 +105,7 @@ public class LokiHardwareBot
 
         dumpServo = hwMap.get(Servo.class, "dumpServo");
 
-        duckMotor = hwMap.get(DcMotor.class, "duckServo");
+        duckMotor = hwMap.get(DcMotor.class, "duckMotor");
 
         lf.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rf.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
