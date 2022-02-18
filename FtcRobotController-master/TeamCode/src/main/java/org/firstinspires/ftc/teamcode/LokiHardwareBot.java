@@ -111,6 +111,9 @@ public class LokiHardwareBot
         rf.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         lb.setDirection(DcMotorSimple.Direction.FORWARD);
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // Set all motors to zero power
         lf.setPower(0);
         rf.setPower(0);

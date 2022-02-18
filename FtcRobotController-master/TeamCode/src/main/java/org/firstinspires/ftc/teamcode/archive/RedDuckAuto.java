@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.archive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-@Disabled
 
-@Autonomous(name="Blue Warehouse Auto",group= "Blue Side")
-public class BlueWarehouseAuto extends LinearOpMode {
+@Disabled
+@Autonomous(name="Red Duck Auto",group= "Red Side")
+public class RedDuckAuto extends LinearOpMode {
 
 
     private final ElapsedTime runtime = new ElapsedTime();
@@ -60,7 +60,7 @@ public class BlueWarehouseAuto extends LinearOpMode {
         telemetry.addData("Status", "F*** the Encoders");
         telemetry.update();
 
-        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);//apparently not needed but just in case the encoders decide to bully the robot
+        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -71,11 +71,17 @@ public class BlueWarehouseAuto extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        timeStrafe( -.2,1);
+        timeDrive (-.2,3);
+        timeTurn(-.3,1.3);
+        timeStrafe(-.2,1.5);
+        turnDuckStart(-.2);
+        timeDrive(-.05,9);
+        turnDuckStop();
+        timeDrive(.1,3);
 
-        timeStrafe( -.2,1);//if you want to put time in decimals then add a (long) before the num
-        timeStrafe(.2,2);
-        timeDrive (.5,3);
-        timeDrive (.2,2);
+
+
 
     }
 
@@ -114,10 +120,13 @@ public class BlueWarehouseAuto extends LinearOpMode {
         lb.setPower(0);
         rb.setPower(0);
     }
-    public void turnDuckStart(double power) {
+    public void turnDuck(double power, double timeSecs) {
         duckMotor.setPower(power);
-    }
-    public void turnDuckStop() {
+        sleep((long)(timeSecs * 1000));
         duckMotor.setPower(0);
+    }
+    public void turnDuckStart(double power) {duckMotor.setPower(power);
+    }
+    public void turnDuckStop() {duckMotor.setPower(0);
     }
 }
