@@ -14,20 +14,22 @@ public class MotorTest extends OpMode {
         robot.slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
     }
 
     @Override
     public void loop() {
         if (gamepad1.a){
             robot.lf.setPower(1);
-            telemetry.addLine("LF Running");
+            telemetry.addData("LF Running", robot.lf.getCurrentPosition());
         }else{
             robot.lf.setPower(0);
         }
 
         if (gamepad1.b){
             robot.lb.setPower(1);
-            telemetry.addLine("LB Running");
+            telemetry.addData("LB Running", robot.lb.getCurrentPosition());
 
         }else{
             robot.lb.setPower(0);
@@ -35,16 +37,17 @@ public class MotorTest extends OpMode {
 
         if (gamepad1.x){
             robot.rf.setPower(1);
-            telemetry.addLine("RF Running");
+            telemetry.addData("RF Running", robot.rf.getCurrentPosition());
         }else{
             robot.rf.setPower(0);
         }
 
         if(gamepad1.y){
             robot.rb.setPower(1);
-            telemetry.addLine("RB Running");
+            telemetry.addData("RB Running", robot.rb.getCurrentPosition());
         }else{
             robot.rb.setPower(0);
+
         }
 
         robot.slideMotor.setPower(gamepad2.left_stick_y);
@@ -72,5 +75,6 @@ public class MotorTest extends OpMode {
             robot.harvester1.setPower(0);
         }
 
+        telemetry.update();
     }
 }
