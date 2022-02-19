@@ -41,10 +41,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         lb  = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
         //duckMotor = hardwareMap.get(DcMotor.class, "duck");
-        lf.setDirection(DcMotor.Direction.FORWARD);
+        lf.setDirection(DcMotor.Direction.REVERSE);
         rf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.FORWARD);
         lb.setDirection(DcMotor.Direction.REVERSE);
-        rb.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public long getDelay() {
@@ -68,17 +68,24 @@ public abstract class AutoAbstract extends LinearOpMode {
 
             if (button.equals("X")) {
                 delay += 100;
+                gamepadRateLimit.reset();
+
             }
             else if (button.equals("Y")) {
                 if (delay != 0) {
                     delay -= 100;
                 }
+                gamepadRateLimit.reset();
             }
             else if (button.equals("A")) {
                 done = true;
+                gamepadRateLimit.reset();
+
             }
             else if (button.equals("B")) {
                 delay = 0;
+                gamepadRateLimit.reset();
+
             }
 
             gamepadRateLimit.reset();
@@ -113,8 +120,8 @@ public abstract class AutoAbstract extends LinearOpMode {
         rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         newlfTarget = lf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
-        newrfTarget = rf.getCurrentPosition() + (int)(-Inches * COUNTS_PER_INCH * direction);
-        newlbTarget = lb.getCurrentPosition() + (int)(-Inches * COUNTS_PER_INCH * direction);
+        newrfTarget = rf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
+        newlbTarget = lb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
         newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
 
         lf.setTargetPosition(newlfTarget);
@@ -130,8 +137,8 @@ public abstract class AutoAbstract extends LinearOpMode {
         runtime.reset();
 
         lf.setPower(Math.abs(speed) * direction);
-        rf.setPower(-Math.abs(speed) * direction);
-        lb.setPower(-Math.abs(speed) * direction);
+        rf.setPower(Math.abs(speed) * direction);
+        lb.setPower(Math.abs(speed) * direction);
         rb.setPower(Math.abs(speed) * direction);
 
         while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp (name = "MotorTest")
+@TeleOp (name = "MotorTest1")
 public class MotorTest extends OpMode {
     LokiHardwareBot robot = new LokiHardwareBot();
 
@@ -22,14 +22,15 @@ public class MotorTest extends OpMode {
     public void loop() {
         if (gamepad1.a){
             robot.lf.setPower(1);
-            telemetry.addData("LF Running", robot.lf.getCurrentPosition());
+            telemetry.addLine("LF Running");
+
         }else{
             robot.lf.setPower(0);
         }
 
         if (gamepad1.b){
             robot.lb.setPower(1);
-            telemetry.addData("LB Running", robot.lb.getCurrentPosition());
+            telemetry.addData("LB Running", robot.rb.getCurrentPosition());
 
         }else{
             robot.lb.setPower(0);
@@ -37,7 +38,7 @@ public class MotorTest extends OpMode {
 
         if (gamepad1.x){
             robot.rf.setPower(1);
-            telemetry.addData("RF Running", robot.rf.getCurrentPosition());
+            telemetry.addData("RF Running", robot.rb.getCurrentPosition());
         }else{
             robot.rf.setPower(0);
         }
@@ -52,6 +53,10 @@ public class MotorTest extends OpMode {
 
         robot.slideMotor.setPower(gamepad2.left_stick_y);
         telemetry.addData("SlideMotor Position", robot.slideMotor.getCurrentPosition());
+        telemetry.addData("RF Pos", robot.rf.getCurrentPosition());
+        telemetry.addData("LF Pos", robot.lf.getCurrentPosition());
+        telemetry.addData("LB Pos", robot.lb.getCurrentPosition());
+        telemetry.addData("RB Pos", robot.rb.getCurrentPosition());
 
 
         if(gamepad2.b){
@@ -75,6 +80,8 @@ public class MotorTest extends OpMode {
             robot.harvester1.setPower(0);
         }
 
-        telemetry.update();
+        if(!gamepad1.atRest()) {
+            telemetry.update();
+        }
     }
 }

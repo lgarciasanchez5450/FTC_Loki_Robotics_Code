@@ -28,6 +28,9 @@ public class Franken_TeleOp extends LinearOpMode {
     private double SpeedFactor = 2;
     public RevBlinkinLedDriver lights;
 
+    private Servo pushyServoF;
+    private Servo pushyServoB;
+
 
     @Override
     public void runOpMode() {
@@ -53,6 +56,9 @@ public class Franken_TeleOp extends LinearOpMode {
 
         arm = hardwareMap.get(DcMotor.class, "SlideMotor");
         dumper = hardwareMap.get(Servo.class, "dumpServo");
+
+        pushyServoB = hardwareMap.get(Servo.class, "pushyServoB");
+        pushyServoF = hardwareMap.get(Servo.class, "pushyServoF");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -147,12 +153,21 @@ public class Franken_TeleOp extends LinearOpMode {
                 duck_motor.setPower(0);
             }
 
-            arm.setPower(gamepad1.right_stick_y);
+            arm.setPower(gamepad2.right_stick_y);
 
             if (gamepad2.a) {
                 dumper.setPosition(1);
             } else if (gamepad2.b) {
                 dumper.setPosition(0);
+            }
+
+            if (gamepad2.x){
+                pushyServoF.setPosition(0.9);
+                pushyServoB.setPosition(0.1);
+            }
+            else if(gamepad2.y) {
+                pushyServoF.setPosition(0.1);
+                pushyServoB.setPosition(0.9);
             }
 
         }

@@ -94,10 +94,10 @@ public class LokiHardwareBot
 
 
         // Define and Initialize Motors
-        lf = hwMap.get(DcMotor.class, "lf");
-        rf = hwMap.get(DcMotor.class, "rf");
-        lb = hwMap.get(DcMotor.class, "lb");
-        rb = hwMap.get(DcMotor.class, "rb");
+        lf = hwMap.get(DcMotor.class, "lf"); //Port 1 Control Hub
+        rf = hwMap.get(DcMotor.class, "rf"); //Port 2 Control Hub
+        lb = hwMap.get(DcMotor.class, "lb"); //Port 3 Control Hub
+        rb = hwMap.get(DcMotor.class, "rb"); //Port 0 Control Hub
 
         harvester1 = hwMap.get(DcMotor.class, "Harvester1");
         harvester2 = hwMap.get(DcMotor.class, "Harvester2");
@@ -112,7 +112,7 @@ public class LokiHardwareBot
         rb.setDirection(DcMotor.Direction.FORWARD);
         lb.setDirection(DcMotor.Direction.REVERSE);
 
-        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         harvester2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
