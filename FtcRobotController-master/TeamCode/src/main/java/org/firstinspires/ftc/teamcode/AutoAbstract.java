@@ -23,7 +23,7 @@ public abstract class AutoAbstract extends LinearOpMode {
     private DcMotor rf = null;
     private DcMotor lb = null;
     private DcMotor rb = null;
-    //private DcMotor duckMotor = null;
+    private DcMotor duckMotor = null;
     private String Side;
     private int speed;
 
@@ -40,7 +40,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         rf = hardwareMap.get(DcMotor.class, "rf");
         lb  = hardwareMap.get(DcMotor.class, "lb");
         rb = hardwareMap.get(DcMotor.class, "rb");
-        //duckMotor = hardwareMap.get(DcMotor.class, "duck");
+        duckMotor = hardwareMap.get(DcMotor.class, "duckMotor");
         lf.setDirection(DcMotor.Direction.REVERSE);
         rf.setDirection(DcMotor.Direction.FORWARD);
         rb.setDirection(DcMotor.Direction.FORWARD);
@@ -62,9 +62,10 @@ public abstract class AutoAbstract extends LinearOpMode {
 
 
             button = getPress();
-            if (!gamepadRateLimit.hasExpired()) {
-                continue;
-            }
+//            if (!gamepadRateLimit.hasExpired()) {
+//                telemetry.addData("GamePad Timer", gamepadRateLimit.time());
+//                continue;
+//            }
 
             if (button.equals("X")) {
                 delay += 100;
@@ -80,7 +81,7 @@ public abstract class AutoAbstract extends LinearOpMode {
             else if (button.equals("A")) {
                 done = true;
                 gamepadRateLimit.reset();
-
+                telemetry.addLine("You Pressed A: ButtonWait");
             }
             else if (button.equals("B")) {
                 delay = 0;
@@ -88,6 +89,7 @@ public abstract class AutoAbstract extends LinearOpMode {
 
             }
 
+            telemetry.addLine("Resetting gamepad limit");
             gamepadRateLimit.reset();
             //sleep(500);
         }
@@ -268,7 +270,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         telemetry.addLine("Y: Red-Carousel-Hub-Park");
         telemetry.update();
         button = getPress();
-        telemetry.addLine("You pressed: " + button);
+        telemetry.addLine("You pressed: " + button + " in getAutoType()");
         telemetry.update();
         return button;
 
@@ -329,10 +331,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         rb.setPower(0);
     }
     public void turnDuckStart(double power) {
-        //duckMotor.setPower(power);
+        duckMotor.setPower(power);
     }
     public void turnDuckStop() {
-        //duckMotor.setPower(0);
+        duckMotor.setPower(0);
     }
 
     public int getDuckPos() {

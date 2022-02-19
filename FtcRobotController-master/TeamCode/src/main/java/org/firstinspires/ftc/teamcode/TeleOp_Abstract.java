@@ -94,5 +94,8 @@ public abstract class TeleOp_Abstract extends OpMode
         }
     }
 
+    public void HarvesterMotor(){
+
+    }
 
 }

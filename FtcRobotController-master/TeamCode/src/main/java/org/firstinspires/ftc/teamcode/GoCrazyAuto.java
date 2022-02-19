@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name="Test Opmoad1",group= "Down Side")
+@Autonomous(name="Test Opmoad1.1",group= "Down Side")
 public class GoCrazyAuto extends AutoAbstract {
 
 
@@ -17,8 +17,8 @@ public class GoCrazyAuto extends AutoAbstract {
     public void runOpMode() {
     setupMotors();
     waitForStart();
-    //encoderDrive(.2,1,48);
-    timeDrive(0.3, 3);
+    encoderDrive(.2,1,25);
+    //timeDrive(0.3, 3);
     //encoderDrive(1,-1,48);
     //encoderStrafe(.3,1,24);
     //encoderStrafe(.3,-1,24);

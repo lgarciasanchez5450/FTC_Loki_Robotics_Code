@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.transition.Slide;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.State;
 
@@ -16,7 +18,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 @TeleOp(name = "State Machine TeleOp")
 
-public class StateMachine_TeleOp extends OpMode {
+public class StateMachine_TeleOp extends TeleOp_Abstract {
 
     public enum LiftState{
         LIFT_READY,
@@ -75,91 +77,93 @@ public class StateMachine_TeleOp extends OpMode {
     public void loop() {
 
         liftAuto();
+        DumpServo();
+        SlideMotor();
 
 
-        switch (dumpState){
-            case IDLE:
-                if (gamepad2.a && dumpTimer.seconds() >= .15) {
-                    robot.dumpServo.setPosition(DUMP_IDLE);
-                    dumpState = dumpState.DUMP;
-                    dumpTimer.reset();
-                    telemetry.addLine("Idle");
-                }
-                break;
+//        switch (dumpState){
+//            case IDLE:
+//                if (gamepad2.a && dumpTimer.seconds() >= .15) {
+//                    robot.dumpServo.setPosition(DUMP_IDLE);
+//                    dumpState = dumpState.DUMP;
+//                    dumpTimer.reset();
+//                    telemetry.addLine("Idle");
+//                }
+//                break;
+//
+//            case DUMP:
+//                if (gamepad2.a && dumpTimer.seconds() >= .15) {
+//                    robot.dumpServo.setPosition(DUMP_DEPOSIT);
+//                    dumpState = dumpState.IDLE;
+//                    dumpTimer.reset();
+//                    telemetry.addLine("Dump");
+//                }
+//                break;
+//        }
 
-            case DUMP:
-                if (gamepad2.a && dumpTimer.seconds() >= .15) {
-                    robot.dumpServo.setPosition(DUMP_DEPOSIT);
-                    dumpState = dumpState.IDLE;
-                    dumpTimer.reset();
-                    telemetry.addLine("Dump");
-                }
-                break;
-        }
-
-        double drive;
-        double strafe;
-        double rotate;
-
-        drive = -gamepad1.left_stick_y * .75;
-        strafe = gamepad1.left_stick_x * .75;
-        rotate = gamepad1.right_stick_x * .75;
-
-        double driveInput = drive;
-        double strafeInput = strafe;
-        double rotateInput = rotate;
-
-        robot.duckMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //robot.slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        //telemetry.addData("robot.slideMotor", robot.slideMotor.getCurrentPosition());
-        telemetry.addData("robot.lf", robot.lf.getCurrentPosition());
-        telemetry.addData("robot.rf", robot.rf.getCurrentPosition());
-        telemetry.addData("robot.lb", robot.lb.getCurrentPosition());
-        telemetry.addData("robot.rb", robot.rb.getCurrentPosition());
-
-
-        if (gamepad1.left_bumper) {
-            driveInput = drive / 2;
-            strafeInput = strafe / 2;
-            rotateInput = rotate / 2;
-            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        } else if (gamepad1.right_bumper) {
-            driveInput = drive * 2;
-            strafeInput = strafe * 2;
-            rotateInput = rotate * 2;
-        } else {
-            driveInput = drive;
-            strafeInput = strafe;
-            rotateInput = rotate;
-        }
-
-
-        robot.lf.setPower(driveInput + strafeInput - rotateInput);
-        robot.lb.setPower(driveInput - strafeInput - rotateInput);
-        robot.rf.setPower(driveInput - strafeInput + rotateInput);
-        robot.rb.setPower(driveInput + strafeInput + rotateInput);
+//        double drive;
+//        double strafe;
+//        double rotate;
+//
+//        drive = -gamepad1.left_stick_y * .75;
+//        strafe = gamepad1.left_stick_x * .75;
+//        rotate = gamepad1.right_stick_x * .75;
+//
+//        double driveInput = drive;
+//        double strafeInput = strafe;
+//        double rotateInput = rotate;
+//
+//        robot.duckMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        robot.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        //robot.slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        robot.lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        robot.rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//
+//        //telemetry.addData("robot.slideMotor", robot.slideMotor.getCurrentPosition());
+//        telemetry.addData("robot.lf", robot.lf.getCurrentPosition());
+//        telemetry.addData("robot.rf", robot.rf.getCurrentPosition());
+//        telemetry.addData("robot.lb", robot.lb.getCurrentPosition());
+//        telemetry.addData("robot.rb", robot.rb.getCurrentPosition());
+//
+//
+//        if (gamepad1.left_bumper) {
+//            driveInput = drive / 2;
+//            strafeInput = strafe / 2;
+//            rotateInput = rotate / 2;
+//            robot.lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            robot.rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            robot.lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            robot.rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        } else if (gamepad1.right_bumper) {
+//            driveInput = drive * 2;
+//            strafeInput = strafe * 2;
+//            rotateInput = rotate * 2;
+//        } else {
+//            driveInput = drive;
+//            strafeInput = strafe;
+//            rotateInput = rotate;
+//        }
+//
+//
+//        robot.lf.setPower(driveInput + strafeInput - rotateInput);
+//        robot.lb.setPower(driveInput - strafeInput - rotateInput);
+//        robot.rf.setPower(driveInput - strafeInput + rotateInput);
+//        robot.rb.setPower(driveInput + strafeInput + rotateInput);
 
         //robot.slideMotor.setPower(-gamepad2.left_stick_y);
 
-        if (gamepad2.dpad_left) {
-            robot.duckMotor.setPower(.53);
-        }
-        else if (gamepad2.dpad_right) {
-            robot.duckMotor.setPower(-.53);
-        }
-        else {
-            robot.duckMotor.setPower(0);
-        }
+//        if (gamepad2.dpad_left) {
+//            robot.duckMotor.setPower(.53);
+//        }
+//        else if (gamepad2.dpad_right) {
+//            robot.duckMotor.setPower(-.53);
+//        }
+//        else {
+//            robot.duckMotor.setPower(0);
+//        }
 
 //        if (-gamepad2.right_stick_y < 0){
 //            cap.setPosition(cap.getPosition() + .005);
@@ -175,30 +179,30 @@ public class StateMachine_TeleOp extends OpMode {
 //        }
 
 
-        if (gamepad2.left_bumper && !inState) {
-            inActive = !inActive;
-        }
-
-        if (inActive) {
-            robot.harvester1.setPower(-.525);
-            robot.harvester2.setPower(-.525);
-        }
-        else if (gamepad2.right_bumper) {
-            robot.harvester1.setPower(.2);
-            robot.harvester2.setPower(.2);
-        }
-        else if (gamepad2.y) {
-            robot.harvester1.setPower(-.3);
-            robot.harvester2.setPower(-.3);
-        }
-        else if (gamepad2.x) {
-            robot.harvester1.setPower(-.75);
-            robot.harvester2.setPower(-.75);
-        }
-        else {
-            robot.harvester1.setPower(0);
-            robot.harvester2.setPower(0);
-        }
+//        if (gamepad2.left_bumper && !inState) {
+//            inActive = !inActive;
+//        }
+//
+//        if (inActive) {
+//            robot.harvester1.setPower(-.525);
+//            robot.harvester2.setPower(-.525);
+//        }
+//        else if (gamepad2.right_bumper) {
+//            robot.harvester1.setPower(.2);
+//            robot.harvester2.setPower(.2);
+//        }
+//        else if (gamepad2.y) {
+//            robot.harvester1.setPower(-.3);
+//            robot.harvester2.setPower(-.3);
+//        }
+//        else if (gamepad2.x) {
+//            robot.harvester1.setPower(-.75);
+//            robot.harvester2.setPower(-.75);
+//        }
+//        else {
+//            robot.harvester1.setPower(0);
+//            robot.harvester2.setPower(0);
+//        }
 
         inState = gamepad2.left_bumper;
         bumperButtonState = gamepad2.a;

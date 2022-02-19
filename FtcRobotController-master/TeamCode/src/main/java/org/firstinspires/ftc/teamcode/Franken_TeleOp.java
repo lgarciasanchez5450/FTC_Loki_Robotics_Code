@@ -11,8 +11,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.checkerframework.checker.units.qual.Speed;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
-@TeleOp(name="Franken TeleOp 2", group="Iterative Opmode")
+import java.util.concurrent.TimeUnit;
+
+@TeleOp(name="Franken TeleOp 2.1", group="Iterative Opmode")
 public class Franken_TeleOp extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -31,9 +34,19 @@ public class Franken_TeleOp extends LinearOpMode {
     private Servo pushyServoF;
     private Servo pushyServoB;
 
+    public boolean pushyServoOpen;
+
+    Deadline gamepadRateLimit;
+    private final static int GAMEPAD_LOCKOUT = 500;
+
+
+
 
     @Override
     public void runOpMode() {
+        gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
+
+
         telemetry.addData("Status", "We're reving to go!");
         telemetry.update();
 
@@ -161,14 +174,24 @@ public class Franken_TeleOp extends LinearOpMode {
                 dumper.setPosition(0);
             }
 
+
+
             if (gamepad2.x){
-                pushyServoF.setPosition(0.9);
-                pushyServoB.setPosition(0.1);
+                if(gamepadRateLimit.hasExpired()) {
+                    if (pushyServoOpen) {
+                        pushyServoF.setPosition(0.9);
+                        pushyServoB.setPosition(0.1);
+                        pushyServoOpen = false;
+                    } else {
+                        pushyServoF.setPosition(0.1);
+                        pushyServoB.setPosition(0.9);
+                        pushyServoOpen = true;
+                    }
+                    gamepadRateLimit.reset();
+
+                }
             }
-            else if(gamepad2.y) {
-                pushyServoF.setPosition(0.1);
-                pushyServoB.setPosition(0.9);
-            }
+
 
         }
     }
