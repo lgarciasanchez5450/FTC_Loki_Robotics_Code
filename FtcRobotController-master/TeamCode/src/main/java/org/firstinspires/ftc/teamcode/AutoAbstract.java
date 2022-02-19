@@ -14,7 +14,7 @@ public abstract class AutoAbstract extends LinearOpMode {
 
     static final double pi = Math.PI;
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 20;     // This is < 1.0 if geared UP
+    static final double DRIVE_GEAR_REDUCTION = 19.2;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 3.75;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * pi);
 
@@ -42,8 +42,8 @@ public abstract class AutoAbstract extends LinearOpMode {
         rb = hardwareMap.get(DcMotor.class, "rb");
         //duckMotor = hardwareMap.get(DcMotor.class, "duck");
         lf.setDirection(DcMotor.Direction.FORWARD);
-        rf.setDirection(DcMotor.Direction.REVERSE);
-        lb.setDirection(DcMotor.Direction.FORWARD);
+        rf.setDirection(DcMotor.Direction.FORWARD);
+        lb.setDirection(DcMotor.Direction.REVERSE);
         rb.setDirection(DcMotor.Direction.REVERSE);
     }
 
@@ -97,9 +97,24 @@ public abstract class AutoAbstract extends LinearOpMode {
         int newlbTarget;
         int newrbTarget;
 
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         newlfTarget = lf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
-        newrfTarget = rf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
-        newlbTarget = lb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
+        newrfTarget = rf.getCurrentPosition() + (int)(-Inches * COUNTS_PER_INCH * direction);
+        newlbTarget = lb.getCurrentPosition() + (int)(-Inches * COUNTS_PER_INCH * direction);
         newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
 
         lf.setTargetPosition(newlfTarget);
@@ -115,8 +130,8 @@ public abstract class AutoAbstract extends LinearOpMode {
         runtime.reset();
 
         lf.setPower(Math.abs(speed) * direction);
-        rf.setPower(Math.abs(speed) * direction);
-        lb.setPower(Math.abs(speed) * direction);
+        rf.setPower(-Math.abs(speed) * direction);
+        lb.setPower(-Math.abs(speed) * direction);
         rb.setPower(Math.abs(speed) * direction);
 
         while (lf.isBusy() || rf.isBusy() || lb.isBusy() || rb.isBusy()) {

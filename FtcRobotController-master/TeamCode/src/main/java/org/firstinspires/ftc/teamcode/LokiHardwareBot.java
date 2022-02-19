@@ -107,11 +107,13 @@ public class LokiHardwareBot
 
         duckMotor = hwMap.get(DcMotor.class, "duckMotor");
 
-        lf.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rf.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        rb.setDirection(DcMotorSimple.Direction.REVERSE);
-        lb.setDirection(DcMotorSimple.Direction.FORWARD);
+        lf.setDirection(DcMotor.Direction.REVERSE);
+        rf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.FORWARD);
+        lb.setDirection(DcMotor.Direction.REVERSE);
+
         slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        harvester2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // Set all motors to zero power
@@ -151,6 +153,23 @@ public class LokiHardwareBot
         //rightClaw = hwMap.get(Servo.class, "right_hand");
         //leftClaw.setPosition(MID_SERVO);
         //rightClaw.setPosition(MID_SERVO);
+    }
+
+    public void turnOnDriveEncoders(){
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
 

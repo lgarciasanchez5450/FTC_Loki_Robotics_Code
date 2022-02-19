@@ -144,10 +144,10 @@ public class StateMachine_TeleOp extends OpMode {
         }
 
 
-        robot.lf.setPower(driveInput + strafeInput + rotateInput);
-        robot.lb.setPower(driveInput - strafeInput + rotateInput);
-        robot.rf.setPower(driveInput - strafeInput - rotateInput);
-        robot.rb.setPower(driveInput + strafeInput - rotateInput);
+        robot.lf.setPower(driveInput + strafeInput - rotateInput);
+        robot.lb.setPower(driveInput - strafeInput - rotateInput);
+        robot.rf.setPower(driveInput - strafeInput + rotateInput);
+        robot.rb.setPower(driveInput + strafeInput + rotateInput);
 
         //robot.slideMotor.setPower(-gamepad2.left_stick_y);
 

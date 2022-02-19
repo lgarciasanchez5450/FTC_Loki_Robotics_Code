@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.checkerframework.checker.units.qual.Speed;
 
-@TeleOp(name="Franken TeleOp 1", group="Iterative Opmode")
+@TeleOp(name="Franken TeleOp 2", group="Iterative Opmode")
 public class Franken_TeleOp extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -56,16 +56,18 @@ public class Franken_TeleOp extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        lf.setDirection(DcMotor.Direction.FORWARD);
-        rf.setDirection(DcMotor.Direction.REVERSE);
-        rb.setDirection(DcMotor.Direction.REVERSE);
-        lb.setDirection(DcMotor.Direction.FORWARD);
+        lf.setDirection(DcMotor.Direction.REVERSE);
+        rf.setDirection(DcMotor.Direction.FORWARD);
+        rb.setDirection(DcMotor.Direction.FORWARD);
+        lb.setDirection(DcMotor.Direction.REVERSE);
+
         harvester_left.setDirection(DcMotor.Direction.FORWARD);
-        harvester_right.setDirection(DcMotor.Direction.FORWARD);
+        harvester_right.setDirection(DcMotor.Direction.REVERSE);
         duck_motor.setDirection(DcMotor.Direction.FORWARD);
         arm.setDirection(DcMotorSimple.Direction.FORWARD);
 
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -100,16 +102,16 @@ public class Franken_TeleOp extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
+            double drive = gamepad1.left_stick_y;
             double turn  =  -gamepad1.right_stick_x;
-            double strafe = gamepad1.left_stick_x * 1.2;
+            double strafe = -gamepad1.left_stick_x * 1.2;
 
             denominator = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn),1);
 
-            lfPower = (drive + turn + strafe)/denominator;
-            rfPower = (drive - turn - strafe)/denominator;
-            rbPower = (drive - turn + strafe)/denominator;
-            lbPower = (drive + turn - strafe)/denominator;
+            lfPower = -(drive + turn + strafe)/denominator;
+            rfPower = -(drive - turn - strafe)/denominator;
+            rbPower = -(drive - turn + strafe)/denominator;
+            lbPower = -(drive + turn - strafe)/denominator;
 
             lfPower *= SpeedFactor;
             rfPower *= SpeedFactor;
