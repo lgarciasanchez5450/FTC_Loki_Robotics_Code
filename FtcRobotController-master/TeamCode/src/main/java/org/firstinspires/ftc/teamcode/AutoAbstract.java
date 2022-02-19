@@ -97,10 +97,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         int newlbTarget;
         int newrbTarget;
 
-        newlfTarget = lf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
-        newrfTarget = rf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
-        newlbTarget = lb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
-        newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH);
+        newlfTarget = lf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
+        newrfTarget = rf.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
+        newlbTarget = lb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
+        newrbTarget = rb.getCurrentPosition() + (int)(Inches * COUNTS_PER_INCH * direction);
 
         lf.setTargetPosition(newlfTarget);
         rf.setTargetPosition(newrfTarget);
@@ -153,10 +153,10 @@ public abstract class AutoAbstract extends LinearOpMode {
         int newlbTarget;
         int newrbTarget;
 
-        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
-        newrfTarget = rf.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
-        newlbTarget = lb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
-        newrbTarget = rb.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH);
+        newlfTarget = lf.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH * direction);
+        newrfTarget = rf.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH * direction);
+        newlbTarget = lb.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH * direction);
+        newrbTarget = rb.getCurrentPosition() - (int)(inches * COUNTS_PER_INCH * direction);
 
         lf.setTargetPosition(newlfTarget);
         rf.setTargetPosition(newrfTarget);
@@ -170,10 +170,10 @@ public abstract class AutoAbstract extends LinearOpMode {
 
         runtime.reset();
 
-        lf.setPower(speed);
-        rf.setPower(-1*speed);
-        lb.setPower(speed);
-        rb.setPower(-1*speed);
+        lf.setPower(speed * direction);
+        rf.setPower(-1*speed * direction);
+        lb.setPower(speed * direction);
+        rb.setPower(-1*speed * direction);
 
         while (lf.isBusy() && rf.isBusy() && lb.isBusy() && rb.isBusy()) {
             telemetry.addData("Hello","Da Robot is mooing!");
