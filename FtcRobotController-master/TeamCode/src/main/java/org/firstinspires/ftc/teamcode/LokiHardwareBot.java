@@ -30,6 +30,7 @@ package org.firstinspires.ftc.teamcode;
  */
 
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -73,6 +74,9 @@ public class LokiHardwareBot
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
+    public RevBlinkinLedDriver lights;
+
+
     /* Constructor */
     public LokiHardwareBot(){
 
@@ -82,6 +86,12 @@ public class LokiHardwareBot
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
+
+
+        lights = hwMap.get(RevBlinkinLedDriver.class, "lights");
+        lights.resetDeviceConfigurationForOpMode();
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+
 
         // Define and Initialize Motors
         lf = hwMap.get(DcMotor.class, "lf");
@@ -95,12 +105,15 @@ public class LokiHardwareBot
 
         dumpServo = hwMap.get(Servo.class, "dumpServo");
 
-        duckMotor = hwMap.get(DcMotor.class, "duckServo");
+        duckMotor = hwMap.get(DcMotor.class, "duckMotor");
 
         lf.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rf.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         rb.setDirection(DcMotorSimple.Direction.REVERSE);
         lb.setDirection(DcMotorSimple.Direction.FORWARD);
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // Set all motors to zero power
         lf.setPower(0);
         rf.setPower(0);
@@ -113,10 +126,20 @@ public class LokiHardwareBot
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         harvester1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         harvester2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

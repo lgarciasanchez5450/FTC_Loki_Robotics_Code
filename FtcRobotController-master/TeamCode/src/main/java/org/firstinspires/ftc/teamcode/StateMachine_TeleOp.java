@@ -110,7 +110,7 @@ public class StateMachine_TeleOp extends OpMode {
         double rotateInput = rotate;
 
         robot.duckMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //robot.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //robot.slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -207,47 +207,56 @@ public class StateMachine_TeleOp extends OpMode {
 
     void liftAuto(){
         switch (liftState){
+
             case LIFT_READY:
                 if (gamepad2.b){
-                    liftState = LiftState.LIFT_START;
+                    liftState = LiftState.LIFT_START; //Begin lifting process when press B
                 }
-                else if (Math.abs(robot.slideMotor.getCurrentPosition()) < 1430){
+                else if (Math.abs(robot.slideMotor.getCurrentPosition()) < 1430){ //If it is within slide bounds...
                     robot.slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                     robot.slideMotor.setPower(-gamepad2.left_stick_y);
                 }
                 else {
-                    robot.slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                    robot.slideMotor.setPower(-(Math.abs(-gamepad2.left_stick_y)));
+                    robot.slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);      //Run only one way? Maybe back down to the bounds?
+                    robot.slideMotor.setPower(-(Math.abs(-gamepad2.left_stick_y)));    //FIXME: Add comments
                 }
                 break;
-            case LIFT_START:
+            case LIFT_START: //Extend fully
                 // robot.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //Go to highest position
                 robot.slideMotor.setTargetPosition(LIFT_HIGH);
                 robot.slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slideMotor.setPower(1);
                 liftState = LiftState.LIFT_MID;
 
+                telemetry.addLine("Phase: Lift Start");
                 break;
-            case LIFT_MID:
+            case LIFT_MID: //GET SERVO IN READY TO DUMP POSITION
+                telemetry.addLine("Phase: Lift MID");
                 if (Math.abs(robot.slideMotor.getCurrentPosition()) > 100) {
                     robot.dumpServo.setPosition(.43);
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
-            case LIFT_EXTEND:
+            case LIFT_EXTEND: //STOP MOTOR
                 if ((Math.abs(robot.slideMotor.getCurrentPosition() - LIFT_HIGH) < 15)) {
                     robot.slideMotor.setPower(0);
                     liftState = LiftState.LIFT_AMONGUS;
                 }
+                telemetry.addLine("Phase: Lift Extend");
+
                 break;
-            case LIFT_AMONGUS:
+            case LIFT_AMONGUS: //DUMPING
+                telemetry.addLine("Phase: Begin Lift Dumping");
                 if (gamepad2.b){
                     robot.dumpServo.setPosition(DUMP_DEPOSIT);
                     liftTimer.reset();
                     liftState = LiftState.LIFT_DUMP;
                 }
                 break;
-            case LIFT_DUMP:
+            case LIFT_DUMP: //RESET SERVO AFTER "DUMP_IDLE SECONDS
+                telemetry.addLine("Phase: Lift Dumping");
+
                 if (liftTimer.seconds() >= DUMP_TIME) {
                     robot.dumpServo.setPosition(DUMP_IDLE);
                     robot.slideMotor.setTargetPosition(0);
@@ -256,7 +265,9 @@ public class StateMachine_TeleOp extends OpMode {
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
-            case LIFT_RETRACT:
+            case LIFT_RETRACT: //STOP MOTOR AFTER RETRACTING
+                telemetry.addLine("Phase: Lift Retracting");
+
                 if (Math.abs(robot.slideMotor.getCurrentPosition() - LIFT_LOW) < 15) {
                     robot.slideMotor.setPower(0);
                     liftState = LiftState.LIFT_READY;
@@ -264,6 +275,8 @@ public class StateMachine_TeleOp extends OpMode {
                 break;
 
         }
+
+        telemetry.addData("Slide Position: ", robot.slideMotor.getCurrentPosition());
 
         if (gamepad2.left_stick_y != 0 && liftState != LiftState.LIFT_READY ){
             liftState = LiftState.LIFT_READY;

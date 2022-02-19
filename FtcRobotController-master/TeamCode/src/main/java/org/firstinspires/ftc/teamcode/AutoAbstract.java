@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+
+import java.util.concurrent.TimeUnit;
 //@Disabled
 
 public abstract class AutoAbstract extends LinearOpMode {
@@ -22,6 +26,15 @@ public abstract class AutoAbstract extends LinearOpMode {
     //private DcMotor duckMotor = null;
     private String Side;
     private int speed;
+
+    /*
+     * Rate limit gamepad button presses to every 500ms.
+     */
+    private final static int GAMEPAD_LOCKOUT = 500;
+
+    Deadline gamepadRateLimit  = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
+
+
     public void setupMotors() {
         lf  = hardwareMap.get(DcMotor.class, "lf");
         rf = hardwareMap.get(DcMotor.class, "rf");
@@ -43,23 +56,33 @@ public abstract class AutoAbstract extends LinearOpMode {
             telemetry.addData("Current Delay in milliseconds: ",delay);
             telemetry.addLine("X: +100 ms");
             telemetry.addLine("Y: -100 ms");
+            telemetry.addLine("B: =0 ms");
             telemetry.addLine("A: Done!");
             telemetry.update();
+
+
             button = getPress();
+            if (!gamepadRateLimit.hasExpired()) {
+                continue;
+            }
+
             if (button.equals("X")) {
                 delay += 100;
-            } else if (button.equals("Y")) {
+            }
+            else if (button.equals("Y")) {
                 if (delay != 0) {
                     delay -= 100;
                 }
-            } else if (button.equals("A")) {
-                done = true;
-            } else if (button.equals("B")) {
-                telemetry.addLine("That is not a valid input!");
-                telemetry.update();
-                sleep(500);
             }
-            sleep(500);
+            else if (button.equals("A")) {
+                done = true;
+            }
+            else if (button.equals("B")) {
+                delay = 0;
+            }
+
+            gamepadRateLimit.reset();
+            //sleep(500);
         }
         return delay;
     }
