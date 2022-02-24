@@ -171,7 +171,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         //This is all new and not tested yet
 
         //angle /= 5.637 ;//5.637 is the magical number that the angle needs to be divided by to have ultimate supremacy over the universe(no joke DONT DELETE THIS NUMBER OR I WILL FIND YOU AND DO SOMETHING BAD LIKE STOMP MY FOOT ON THE FLOOR FLOOR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        double inches = (18.75*Math.PI)/(360/angle);
+        double inches = ((2*Math.sqrt(56))*Math.PI)/(360/angle);
         int newlfTarget;
         int newrfTarget;
         int newlbTarget;
