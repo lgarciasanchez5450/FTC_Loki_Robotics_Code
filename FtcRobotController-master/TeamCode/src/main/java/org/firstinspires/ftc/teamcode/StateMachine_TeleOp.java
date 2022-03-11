@@ -222,7 +222,7 @@ public class StateMachine_TeleOp extends TeleOp_Abstract {
                 }
                 else {
                     robot.slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);      //Run only one way? Maybe back down to the bounds?
-                    robot.slideMotor.setPower(-(Math.abs(-gamepad2.left_stick_y)));    //FIXME: Add comments
+                    robot.slideMotor.setPower(-(Math.abs(-gamepad2.left_stick_y)));     //FIXME: Add comments
                 }
                 break;
             case LIFT_START: //Extend fully
