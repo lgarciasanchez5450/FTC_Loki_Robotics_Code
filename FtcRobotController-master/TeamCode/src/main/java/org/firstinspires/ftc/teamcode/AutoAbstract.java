@@ -51,7 +51,7 @@ public abstract class AutoAbstract extends LinearOpMode {
         long delay = 0;
         boolean done = false;
         String button;
-        while (!done) {
+        while (!done && !isStopRequested()) {
             telemetry.addLine("How long should I wait before starting?");
             telemetry.addData("Current Delay in milliseconds: ",delay);
             telemetry.addLine("X: +100 ms");
@@ -60,7 +60,7 @@ public abstract class AutoAbstract extends LinearOpMode {
             telemetry.addLine("A: Done!");
             telemetry.update();
 
-
+            sleep(1000);
             button = getPress();
 //            if (!gamepadRateLimit.hasExpired()) {
 //                telemetry.addData("GamePad Timer", gamepadRateLimit.time());
@@ -73,26 +73,31 @@ public abstract class AutoAbstract extends LinearOpMode {
 
             }
             else if (button.equals("Y")) {
-                if (delay != 0) {
-                    delay -= 100;
+                delay -= 100;
+                if (delay < 0) {
+                    delay = 0;
                 }
                 gamepadRateLimit.reset();
             }
             else if (button.equals("A")) {
                 done = true;
                 gamepadRateLimit.reset();
-                telemetry.addLine("You Pressed A: ButtonWait");
+                telemetry.addLine("You Pressed A: Finish ButtonWait");
             }
             else if (button.equals("B")) {
                 delay = 0;
-                gamepadRateLimit.reset();
 
+                gamepadRateLimit.reset();
+                telemetry.addLine("You Pressed B: Reset Timer");
             }
 
-            telemetry.addLine("Resetting gamepad limit");
+            //telemetry.addLine("Resetting gamepad limit");
+            telemetry.update();
             gamepadRateLimit.reset();
             //sleep(500);
         }
+
+
         return delay;
     }
 
