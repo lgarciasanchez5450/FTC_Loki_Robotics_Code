@@ -5,11 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.archive.Auto_Abstract;
-
 @Disabled
 @Autonomous(name="Blue Duck Auto",group= "Blue Side")
-public class BlueDuckAuto extends Auto_Abstract {
+public class BlueDuckAutoExample extends Auto_Abstract_Example {
 
 
 

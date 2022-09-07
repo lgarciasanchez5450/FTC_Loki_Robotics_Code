@@ -102,10 +102,10 @@ public class Franken_TeleOp extends LinearOpMode {
             double lbPower;
             double denominator;
 
+            //Control Speed Mod and Related Lights
             if (gamepad1.a) {
                 SpeedFactor = 1;
                 lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-
             } else if (gamepad1.b) {
                 SpeedFactor = 0.5;
                 lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);

@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 //imports
 
 
-public abstract class Auto_Abstract extends LinearOpMode {
+public abstract class Auto_Abstract_Example extends LinearOpMode {
     //variables
     public DcMotor lf, rf, lb, rb, ls, duckMotor, harvester; //Define Motors In Code
     public Gamepad g1, g2;

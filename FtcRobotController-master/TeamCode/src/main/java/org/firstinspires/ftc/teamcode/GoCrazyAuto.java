@@ -12,17 +12,24 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class GoCrazyAuto extends AutoAbstract {
 
 
-
     @Override
     public void runOpMode() {
-    setupMotors();
-    waitForStart();
-    encoderDrive(.2,1,25);
-    //timeDrive(0.3, 3);
-    //encoderDrive(1,-1,48);
-    //encoderStrafe(.3,1,24);
-    //encoderStrafe(.3,-1,24);
-    //encoderTurn(.3,1,360);
-    //encoderTurn(.3,-1,360);
+        setupMotors();
+        waitForStart();
+        //encoderDrive(.2,1,24);
+        timeStrafe(-.3, 3);
+        timeDrive(-0.3, 3);
+        timeDrive(.2,.8);
+        timeTurn(-.2,3.2);
+        timeStrafe(-.3,2);
+        timeDrive(-.3,1.2);
+        turnDuckStart(.6);
+        timeDrive(-.1, 5);
+        turnDuckStop();
+        timeDrive(.2, 2);
+        //encoderStrafe(.3,1,24);
+        //encoderStrafe(.3,-1,24);
+        //encoderTurn(.3,1,360);
+        //encoderTurn(.3,-1,360);
     }
 }

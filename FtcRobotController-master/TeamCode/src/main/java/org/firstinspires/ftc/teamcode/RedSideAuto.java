@@ -15,9 +15,16 @@ public class RedSideAuto extends AutoAbstract {
         setupMotors();
         //
         String Side = getAutoType();
+        sleep(500);
         String ParkSide = getParkSide();
         long Delay = getDelay();
+        sleep(1000);
+        //telemetry.addLine("Gud tu GOU");
+        //telemetry.update();
         waitForStart();
+
+
+        //========================================================================================//
         sleep(Delay);
         if (Side.equals("A")) {//Red-Park
             if (ParkSide.equals("A")) {
