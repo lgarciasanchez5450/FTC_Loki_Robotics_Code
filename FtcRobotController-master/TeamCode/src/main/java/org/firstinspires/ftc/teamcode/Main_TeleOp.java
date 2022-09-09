@@ -5,6 +5,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -23,18 +24,20 @@ public class Main_TeleOp extends LinearOpMode {
     private DcMotor rf = null;
     private DcMotor rb = null;
     private DcMotor lb = null;
-    private DcMotor harvester_left = null;
-    private DcMotor harvester_right = null;
-    private DcMotor duck_motor = null;
-    private DcMotor arm = null;
-    private Servo dumper =null;
+    //private DcMotor harvester_left = null;
+    //private DcMotor harvester_right = null;
+    //private DcMotor duck_motor = null;
+    //private DcMotor arm = null;
+    //private Servo dumper =null;
     private double SpeedFactor = 2;
-    public RevBlinkinLedDriver lights;
+    //public RevBlinkinLedDriver lights;
     private static final double STRAFE_ASSISTANCE = 1.2;
     //Strafe assistance helps when trying to strafe to strafe correctly,
     //not advised when trying to move at a non cardinal direction strafing.
-    private static final float SPEED_TRIGGER_THRESHOLD = 0.5f;
+    private static float SPEED_TRIGGER_THRESHOLD;
     //Trigger Threshold manipulates the base speed and how much speedFactor can be affected by left trigger.
+    private Gamepad[] controllers = {gamepad1,gamepad2};
+    private boolean x, y, a, b, xdown, ydown, adown, bdown, px, py, pa, pb = false;
 
     // Setup a variable for each drive wheel to save power level for telemetry
     double lfPower;
@@ -42,6 +45,24 @@ public class Main_TeleOp extends LinearOpMode {
     double rbPower;
     double lbPower;
     double denominator;
+
+    public void poll() {
+        poll(1);
+    }
+    public void poll(int controller_type) {
+        x = controllers[controller_type].x;
+        y = controllers[controller_type].y;
+        a = controllers[controller_type].a;
+        b = controllers[controller_type].b;
+        xdown = x && !px;
+        ydown = y && !py;
+        adown = a && !pa;
+        bdown = b && !pb;
+        px = x;
+        py = y;
+        pa = a;
+        pb = b;
+    }
 
     private double abs(double a) {
         if (a < 0) {
@@ -51,6 +72,50 @@ public class Main_TeleOp extends LinearOpMode {
         }
     }
 
+    private boolean selectOrNo(){
+        telemetry.addLine("Set own left trigger threshold? X) Yes anything else)No");
+        telemetry.update();
+        while (true) {
+            if (gamepad1.a) {
+                return false;
+            }
+            else if (gamepad1.b) {
+                return false;
+            }
+            else if (gamepad1.y) {
+                return false;
+            }
+            else if (gamepad1.x) {
+                return true;
+            }
+        }
+    }
+    private float getTriggerThreshold() {
+        int threshold = 0;
+        boolean select_threshold = selectOrNo();
+        if (select_threshold) {
+            return 0.5f;
+        }
+        else {
+            while (true) {
+                telemetry.addData("Current Threshold -10 is more sensitive, 10 is less sensitive, currently: ",threshold);
+                telemetry.addLine("A) +1 , B) -1 , X) Done");
+                telemetry.update();
+                poll();
+                if (adown) {
+                    if (threshold < 10) {
+                        threshold += 1;
+                    }
+                } else if (bdown) {
+                    if (threshold > -10) {
+                        threshold -= 1;
+                    }
+                } else if (xdown) {
+                    return (float) Math.pow(2,threshold/20);
+                }
+            }
+        }
+    }
 
 
     @Override
@@ -61,9 +126,9 @@ public class Main_TeleOp extends LinearOpMode {
         telemetry.update();
 
 
-        lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
-        lights.resetDeviceConfigurationForOpMode();
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        //lights = hardwareMap.get(RevBlinkinLedDriver.class, "lights");
+        //lights.resetDeviceConfigurationForOpMode();
+        //lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
@@ -72,13 +137,13 @@ public class Main_TeleOp extends LinearOpMode {
         rf = hardwareMap.get(DcMotor.class, "rf");
         rb = hardwareMap.get(DcMotor.class, "rb");
         lb = hardwareMap.get(DcMotor.class, "lb");
-        harvester_left = hardwareMap.get(DcMotor.class, "Harvester1");
-        harvester_right = hardwareMap.get(DcMotor.class, "Harvester2");
-        duck_motor = hardwareMap.get(DcMotor.class, "duckMotor");
-        duck_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //harvester_left = hardwareMap.get(DcMotor.class, "Harvester1");
+        //harvester_right = hardwareMap.get(DcMotor.class, "Harvester2");
+        //duck_motor = hardwareMap.get(DcMotor.class, "duckMotor");
+        //duck_motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        arm = hardwareMap.get(DcMotor.class, "SlideMotor");
-        dumper = hardwareMap.get(Servo.class, "dumpServo");
+        //arm = hardwareMap.get(DcMotor.class, "SlideMotor");
+        //dumper = hardwareMap.get(Servo.class, "dumpServo");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -88,14 +153,14 @@ public class Main_TeleOp extends LinearOpMode {
         rb.setDirection(DcMotor.Direction.FORWARD);
         lb.setDirection(DcMotor.Direction.REVERSE);
 
-        harvester_left.setDirection(DcMotor.Direction.FORWARD);
-        harvester_right.setDirection(DcMotor.Direction.REVERSE);
-        duck_motor.setDirection(DcMotor.Direction.FORWARD);
-        arm.setDirection(DcMotorSimple.Direction.FORWARD);
+        //harvester_left.setDirection(DcMotor.Direction.FORWARD);
+        //harvester_right.setDirection(DcMotor.Direction.REVERSE);
+        //duck_motor.setDirection(DcMotor.Direction.FORWARD);
+        //arm.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
+        SPEED_TRIGGER_THRESHOLD = getTriggerThreshold();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -151,7 +216,8 @@ public class Main_TeleOp extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", lfPower, rfPower, rbPower, lbPower);
+            telemetry.addData("Speed Factor",1);
+            //telemetry.addData("Motors", "left (%.2f), right (%.2f)", lfPower, rfPower, rbPower, lbPower);
             telemetry.update();
 
             if (gamepad2.dpad_left){
