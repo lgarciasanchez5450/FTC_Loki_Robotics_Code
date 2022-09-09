@@ -15,8 +15,8 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
 
-@TeleOp(name="Franken TeleOp 2.1", group="Iterative Opmode")
-public class Franken_TeleOp extends LinearOpMode {
+@TeleOp(name="Franken TeleOp 2.1", group="Linear Opmode")
+public class Main_TeleOp extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
@@ -30,21 +30,31 @@ public class Franken_TeleOp extends LinearOpMode {
     private Servo dumper =null;
     private double SpeedFactor = 2;
     public RevBlinkinLedDriver lights;
+    private static final double STRAFE_ASSISTANCE = 1.2;
+    //Strafe assistance helps when trying to strafe to strafe correctly,
+    //not advised when trying to move at a non cardinal direction strafing.
+    private static final float SPEED_TRIGGER_THRESHOLD = 0.5f;
+    //Trigger Threshold manipulates the base speed and how much speedFactor can be affected by left trigger.
 
-    private Servo pushyServoF;
-    private Servo pushyServoB;
+    // Setup a variable for each drive wheel to save power level for telemetry
+    double lfPower;
+    double rfPower;
+    double rbPower;
+    double lbPower;
+    double denominator;
 
-    public boolean pushyServoOpen;
-
-    Deadline gamepadRateLimit;
-    private final static int GAMEPAD_LOCKOUT = 500;
-
+    private double abs(double a) {
+        if (a < 0) {
+            return -a;
+        } else {
+            return a;
+        }
+    }
 
 
 
     @Override
     public void runOpMode() {
-        gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
 
 
         telemetry.addData("Status", "We're reving to go!");
@@ -70,8 +80,6 @@ public class Franken_TeleOp extends LinearOpMode {
         arm = hardwareMap.get(DcMotor.class, "SlideMotor");
         dumper = hardwareMap.get(Servo.class, "dumpServo");
 
-        pushyServoB = hardwareMap.get(Servo.class, "pushyServoB");
-        pushyServoF = hardwareMap.get(Servo.class, "pushyServoF");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -95,14 +103,10 @@ public class Franken_TeleOp extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double lfPower;
-            double rfPower;
-            double rbPower;
-            double lbPower;
-            double denominator;
+
 
             //Control Speed Mod and Related Lights
+            /*
             if (gamepad1.a) {
                 SpeedFactor = 1;
                 lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
@@ -114,28 +118,25 @@ public class Franken_TeleOp extends LinearOpMode {
                 lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
             }
 
-            telemetry.addData("SpeedMod", SpeedFactor);
 
+            telemetry.addData("SpeedMod", SpeedFactor);
+            */
+            SpeedFactor = Math.max(gamepad1.left_trigger,1.0f-SPEED_TRIGGER_THRESHOLD);
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = gamepad1.left_stick_y;
-            double turn  =  -gamepad1.right_stick_x;
-            double strafe = -gamepad1.left_stick_x * 1.2;
+            double drive  = Math.pow(-gamepad1.left_stick_y,STRAFE_ASSISTANCE);
+            double turn   =  gamepad1.right_stick_x;
+            double strafe =  gamepad1.left_stick_x * STRAFE_ASSISTANCE;
 
-            denominator = Math.max(Math.abs(strafe) + Math.abs(drive) + Math.abs(turn),1);
+            denominator = Math.max(abs(strafe) + abs(drive) + abs(turn),1);
 
-            lfPower = -(drive + turn + strafe)/denominator;
-            rfPower = -(drive - turn - strafe)/denominator;
-            rbPower = -(drive - turn + strafe)/denominator;
-            lbPower = -(drive + turn - strafe)/denominator;
-
-            lfPower *= SpeedFactor;
-            rfPower *= SpeedFactor;
-            rbPower *= SpeedFactor;
-            lbPower *= SpeedFactor;
+            lfPower = SpeedFactor * (drive + turn + strafe) / denominator;
+            rfPower = SpeedFactor * (drive - turn - strafe) / denominator;
+            rbPower = SpeedFactor * (drive - turn + strafe) / denominator;
+            lbPower = SpeedFactor * (drive + turn - strafe) / denominator;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -153,46 +154,11 @@ public class Franken_TeleOp extends LinearOpMode {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", lfPower, rfPower, rbPower, lbPower);
             telemetry.update();
 
-            harvester_left.setPower(gamepad2.left_stick_y);
-            harvester_right.setPower(gamepad2.left_stick_y);
-
-
-
             if (gamepad2.dpad_left){
-                duck_motor.setPower(-0.5);
-            } else if (gamepad2.dpad_right){
-                duck_motor.setPower(0.5);
-            }else{
-                duck_motor.setPower(0);
+                //duck_motor.setPower(-0.5);
+            } else if (gamepad2.dpad_right) {
+                //duck_motor.setPower(0.5);
             }
-
-            arm.setPower(gamepad2.right_stick_y);
-
-            if (gamepad2.a) {
-                dumper.setPosition(1);
-            } else if (gamepad2.b) {
-                dumper.setPosition(0);
-            }
-
-
-
-            if (gamepad2.x){
-                if(gamepadRateLimit.hasExpired()) {
-                    if (pushyServoOpen) {
-                        pushyServoF.setPosition(0.9);
-                        pushyServoB.setPosition(0.1);
-                        pushyServoOpen = false;
-                    } else {
-                        pushyServoF.setPosition(0.1);
-                        pushyServoB.setPosition(0.9);
-                        pushyServoOpen = true;
-                    }
-                    gamepadRateLimit.reset();
-
-                }
-            }
-
-
         }
     }
 }

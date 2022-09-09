@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -20,21 +21,24 @@ public abstract class AutoAbstract extends LinearOpMode {
 
     private boolean xdown , ydown , adown , bdown = false;
     private boolean px , py , pa , pb = false;
-
     private boolean x , y , a , b = false;
+    private Gamepad[] controllers = {gamepad1, gamepad2};
     private final ElapsedTime runtime = new ElapsedTime();
     private DcMotor lf = null;
     private DcMotor rf = null;
     private DcMotor lb = null;
     private DcMotor rb = null;
-    private DcMotor duckMotor = null;
+    //private DcMotor extraMotor = null;
     private String Side;
     private int speed;
     public void poll() {
-        x = gamepad1.x;
-        y = gamepad1.y;
-        a = gamepad1.a;
-        b = gamepad1.b;
+        poll(1);
+    }
+    public void poll(int controller_type) {
+        x = controllers[controller_type].x;
+        y = controllers[controller_type].y;
+        a = controllers[controller_type].a;
+        b = controllers[controller_type].b;
         xdown = x && !px;
         ydown = y && !py;
         adown = a && !pa;
@@ -88,10 +92,8 @@ public abstract class AutoAbstract extends LinearOpMode {
             if (xdown) {
                 delay += 500;
             }
-            else if (ydown) {
-                if (delay != 0) {
-                    delay -= 100;
-                }
+            else if (ydown && delay != 0) {
+                delay -= 100;
             }
             else if (adown) {
                 done = true;
@@ -337,21 +339,21 @@ public abstract class AutoAbstract extends LinearOpMode {
         lb.setPower(0);
         rb.setPower(0);
     }
-    public void turnDuckStart(double power) {
-        duckMotor.setPower(power);
-    }
-    public void turnDuckStop() {
-        duckMotor.setPower(0);
-    }
+    //public void turnDuckStart(double power) {
+    //    extraMotor.setPower(power);
+    //}
+    //public void turnDuckStop() {
+    //    extraMotor.setPower(0);
+    //}
 
     public int getDuckPos() {
         return 1;
     }
     public String getParkSide() {
         String button;
-        telemetry.addLine("Where are we going to park");
-        telemetry.addLine("A: Warehouse Side");
-        telemetry.addLine("B: Depot");
+        telemetry.addLine("Park Place?");
+        telemetry.addLine("A: <option_a>");
+        telemetry.addLine("B: <option_b>");
         telemetry.update();
         button = getPress();
         telemetry.addLine("You pressed: " + button);
